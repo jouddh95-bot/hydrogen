@@ -1,0 +1,54 @@
+{%- comment -%}
+  Trending now: the section pins while the page keeps scrolling, and a row of
+  tall 9:16 cards slides sideways past a giant counter (assets/feed.js).
+  On touch screens the row is a native swipe carousel instead.
+{%- endcomment -%}
+{%- assign list = section.settings.collection.products -%}
+<section class="reel-sec" data-hreel>
+  <div class="reel-sec__pin" data-hreel-pin>
+    <div class="reel-sec__head container">
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="h2" data-bounce>{{ section.settings.heading }}</h2>
+      <p class="reel-sec__count mono" aria-hidden="true"><b data-hreel-n>01</b> / {{ list.size | at_most: section.settings.limit }}</p>
+    </div>
+    <div class="reel-sec__track" data-hreel-track>
+      {%- for p in list limit: section.settings.limit -%}
+        {%- assign v = p.selected_or_first_available_variant -%}
+        <article class="tcard" style="--i: {{ forloop.index0 }}">
+          <a class="tcard__link" href="{{ p.url }}" data-product-link aria-label="{{ p.title | escape }}">
+            <span class="tcard__media" data-shared-media>
+              {%- if p.featured_media -%}{{ p.featured_media | image_url: width: 720 | image_tag: loading: 'lazy', class: 'tcard__img', alt: p.title }}{%- endif -%}
+            </span>
+            <span class="tcard__rank">#{{ forloop.index }}</span>
+            {%- if v.compare_at_price > v.price -%}
+              {%- assign saved = v.compare_at_price | minus: v.price | times: 100 | divided_by: v.compare_at_price | floor -%}
+              <span class="tcard__deal">-{{ saved }}%</span>
+            {%- endif -%}
+            <span class="tcard__body">
+              <span class="tcard__title">{{ p.title | escape | truncatewords: 8 }}</span>
+              <span class="tcard__price">{{ v.price | money }}</span>
+            </span>
+          </a>
+        </article>
+      {%- endfor -%}
+      <a class="tcard tcard--more" href="{{ section.settings.collection.url }}">
+        <span>{{ 'collections.view_all' | t }}</span>{% render 'icon', icon: 'arrow' %}
+      </a>
+    </div>
+    <div class="reel-sec__bar container" aria-hidden="true"><span data-hreel-bar></span></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trending reel",
+  "class": "section-hreel",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Trending now" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The internet's favorites" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 4, "max": 12, "step": 1, "default": 8 }
+  ],
+  "presets": [{ "name": "Trending reel" }]
+}
+{% endschema %}

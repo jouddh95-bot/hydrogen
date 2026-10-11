@@ -12,7 +12,7 @@
     assign loading = 'eager'
   endif
 -%}
-<article class="card reveal" style="--i: {{ index | default: 0 }}" data-tilt>
+<article class="card card--t{{ index | default: 0 | modulo: 5 }} reveal" style="--i: {{ index | default: 0 }}">
   <a class="card__link" href="{{ product.url }}" data-product-link aria-label="{{ product.title | escape }}">
     <div class="card__media" data-shared-media>
       {%- if img -%}

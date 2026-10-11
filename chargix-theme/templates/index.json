@@ -1,243 +1,73 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-3d",
+      "type": "feed-hero",
       "blocks": {
-        "spec1": {
-          "type": "spec",
-          "settings": {
-            "value": "Viral",
-            "label": "tested picks"
-          }
-        },
-        "spec2": {
-          "type": "spec",
-          "settings": {
-            "value": "Free",
-            "label": "US shipping"
-          }
-        },
-        "spec3": {
-          "type": "spec",
-          "settings": {
-            "value": "30-day",
-            "label": "returns"
-          }
-        }
+        "c1": { "type": "chip", "settings": { "value": "Free", "label": "US shipping" } },
+        "c2": { "type": "chip", "settings": { "value": "30-day", "label": "returns" } },
+        "c3": { "type": "chip", "settings": { "value": "Viral", "label": "tested picks" } }
       },
-      "block_order": [
-        "spec1",
-        "spec2",
-        "spec3"
-      ],
+      "block_order": ["c1", "c2", "c3"],
       "settings": {
-        "eyebrow": "Curated viral tech",
+        "eyebrow": "Trending right now",
         "heading": "Tech that broke the internet.",
-        "subheading": "The gadgets that broke the internet, hand-picked, tested and shipped free across the US. Only the ones worth the hype make the cut.",
+        "subheading": "The gadgets you keep seeing on your feed, hand-picked, tested and shipped free across the US. Only the ones worth the hype make the cut.",
         "cta_label": "Shop the bestsellers",
         "cta_link": "shopify://collections/best-sellers",
         "cta2_label": "Explore collections",
         "cta2_link": "shopify://collections",
-        "orbit_collection": "best-sellers",
-        "height": 90
+        "feed_collection": "all",
+        "badge_a": "Seen on your feed",
+        "badge_b": "Tested by us"
       }
     },
-    "trust": {
-      "type": "trust-bar",
+    "tapes": {
+      "type": "sticker-marquee",
+      "settings": { "words": "Viral tech, Free US shipping, 30-day returns, Tested by us, New drops weekly" }
+    },
+    "bento": {
+      "type": "bento-categories",
       "blocks": {
-        "t1": {
-          "type": "item",
-          "settings": {
-            "icon": "truck",
-            "title": "Free US shipping",
-            "text": "On every order"
-          }
-        },
-        "t2": {
-          "type": "item",
-          "settings": {
-            "icon": "return",
-            "title": "30-day returns",
-            "text": "Change your mind, send it back"
-          }
-        },
-        "t3": {
-          "type": "item",
-          "settings": {
-            "icon": "lock",
-            "title": "Secure checkout",
-            "text": "Shop Pay, cards and wallets"
-          }
-        },
-        "t4": {
-          "type": "item",
-          "settings": {
-            "icon": "bolt",
-            "title": "Curated viral tech",
-            "text": "Only what's worth the hype"
-          }
-        }
+        "b1": { "type": "collection", "settings": { "collection": "camera-grips-lighting", "title": "Creator lighting", "color": "pink" } },
+        "b2": { "type": "collection", "settings": { "collection": "phone-stands-mounts", "title": "", "color": "lime" } },
+        "b3": { "type": "collection", "settings": { "collection": "selfie-sticks-tripods", "title": "", "color": "violet" } },
+        "b4": { "type": "collection", "settings": { "collection": "chargers-power", "title": "", "color": "orange" } },
+        "b5": { "type": "collection", "settings": { "collection": "lenses-filters", "title": "", "color": "mint" } },
+        "b6": { "type": "collection", "settings": { "collection": "action-camera-accessories", "title": "", "color": "ink" } },
+        "b7": { "type": "collection", "settings": { "collection": "cases-screen-protection", "title": "", "color": "butter" } }
       },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
-      ]
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7"],
+      "settings": { "eyebrow": "Shop by vibe", "heading": "Find your next obsession" }
     },
-    "deck": {
-      "type": "category-deck",
+    "trending": {
+      "type": "trending-reel",
+      "settings": { "eyebrow": "Trending now", "heading": "The internet's favorites", "collection": "best-sellers", "limit": 8 }
+    },
+    "stack": {
+      "type": "why-stack",
       "blocks": {
-        "c1": {
-          "type": "collection",
-          "settings": {
-            "collection": "chargers-power",
-            "hue": 330
-          }
-        },
-        "c2": {
-          "type": "collection",
-          "settings": {
-            "collection": "phone-stands-mounts",
-            "hue": 25
-          }
-        },
-        "c3": {
-          "type": "collection",
-          "settings": {
-            "collection": "selfie-sticks-tripods",
-            "hue": 275
-          }
-        },
-        "c4": {
-          "type": "collection",
-          "settings": {
-            "collection": "camera-grips-lighting",
-            "hue": 165
-          }
-        },
-        "c5": {
-          "type": "collection",
-          "settings": {
-            "collection": "lenses-filters",
-            "hue": 300
-          }
-        },
-        "c6": {
-          "type": "collection",
-          "settings": {
-            "collection": "cases-screen-protection",
-            "hue": 45
-          }
-        },
-        "c7": {
-          "type": "collection",
-          "settings": {
-            "collection": "action-camera-accessories",
-            "hue": 5
-          }
-        }
+        "s1": { "type": "card", "settings": { "kicker": "Discover", "title": "Seen it everywhere", "text": "<p>We track what's blowing up online and test it first. If it doesn't deliver, it doesn't make the shelf.</p>", "product": "telesin-18w-pd-fast-charger-for-dji-osmo-action-6-5pro-osmo-360-tf-card-3-slots-battery-pocket-charging-storage-box", "link_label": "Shop power", "link": "shopify://collections/chargers-power", "color": "pink" } },
+        "s2": { "type": "card", "settings": { "kicker": "Unbox", "title": "Built to impress", "text": "<p>Premium finishes, magnetic everything, and the kind of details people ask you about.</p>", "product": "telesin-magnetic-mobile-phone-floor-stand-cantilever-live-broadcast-tablet-bracket-lifting-bracket-universal-mobile-phone-holder", "link_label": "Shop setups", "link": "shopify://collections/phone-stands-mounts", "color": "lime" } },
+        "s3": { "type": "card", "settings": { "kicker": "Create", "title": "Make it go viral", "text": "<p>Lights, grips and lenses that turn any phone into the camera behind your next big post.</p>", "product": "telesin-magnetic-rgb-fill-light-phone-camera-shoot-hand-grip-phone-holder-shooting-aid-remote-control-handle-for-smartphone", "link_label": "Shop creator gear", "link": "shopify://collections/camera-grips-lighting", "color": "violet" } }
       },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5",
-        "c6",
-        "c7"
-      ],
-      "settings": {
-        "eyebrow": "Collections",
-        "heading": "Find your next obsession"
-      }
+      "block_order": ["s1", "s2", "s3"],
+      "settings": { "eyebrow": "Why ChargiX", "heading": "From viral to your hands" }
     },
-    "bestsellers": {
-      "type": "product-rail",
-      "settings": {
-        "eyebrow": "Trending now",
-        "heading": "The internet's favorites",
-        "collection": "best-sellers",
-        "limit": 10
-      }
-    },
-    "story": {
-      "type": "story-scroll",
-      "blocks": {
-        "s1": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "Discover",
-            "title": "Seen it everywhere",
-            "text": "<p>We track what's blowing up online and test it first. If it doesn't deliver, it doesn't make the shelf.</p>",
-            "product": "telesin-18w-pd-fast-charger-for-dji-osmo-action-6-5pro-osmo-360-tf-card-3-slots-battery-pocket-charging-storage-box",
-            "hue": 330,
-            "link_label": "Shop power",
-            "link": "shopify://collections/chargers-power"
-          }
-        },
-        "s2": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "Unbox",
-            "title": "Built to impress",
-            "text": "<p>Premium finishes, magnetic everything, and the kind of details people ask you about.</p>",
-            "product": "telesin-magnetic-mobile-phone-floor-stand-cantilever-live-broadcast-tablet-bracket-lifting-bracket-universal-mobile-phone-holder",
-            "hue": 275,
-            "link_label": "Shop setups",
-            "link": "shopify://collections/phone-stands-mounts"
-          }
-        },
-        "s3": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "Create",
-            "title": "Make it go viral",
-            "text": "<p>Lights, grips and lenses that turn any phone into the camera behind your next big post.</p>",
-            "product": "telesin-magnetic-rgb-fill-light-phone-camera-shoot-hand-grip-phone-holder-shooting-aid-remote-control-handle-for-smartphone",
-            "hue": 25,
-            "link_label": "Shop creator gear",
-            "link": "shopify://collections/camera-grips-lighting"
-          }
-        }
-      },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3"
-      ],
-      "settings": {
-        "eyebrow": "Why ChargiX",
-        "heading": "From viral to your hands"
-      }
-    },
-    "spotlight": {
-      "type": "spotlight",
+    "drop": {
+      "type": "drop-spotlight",
       "settings": {
         "product": "telesin-portrait-lens-kit-105mm-200mm-optical-shutter-dial-3200mah-magsafe-mount-iphone-17-pro-pro-max",
         "eyebrow": "The showpiece",
+        "word": "DROP",
         "tag": "105mm + 200mm optics",
         "specs": "105mm + 200mm optical portrait lenses\nManual EV, ISO, shutter and white balance\n3,200mAh built-in battery\nMagSafe mount",
-        "hue": 300
+        "cta": "See it up close"
       }
     },
     "all": {
       "type": "product-grid",
-      "settings": {
-        "eyebrow": "The collection",
-        "heading": "Everything worth the hype",
-        "collection": "all",
-        "limit": 8
-      }
+      "settings": { "eyebrow": "The collection", "heading": "Everything worth the hype", "collection": "all", "limit": 8 }
     }
   },
-  "order": [
-    "hero",
-    "trust",
-    "deck",
-    "bestsellers",
-    "story",
-    "spotlight",
-    "all"
-  ]
+  "order": ["hero", "tapes", "bento", "trending", "stack", "drop", "all"]
 }

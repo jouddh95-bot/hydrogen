@@ -24,11 +24,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap">
 
-    {%- render 'theme-tokens' -%}
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'luxe.css' | asset_url | stylesheet_tag }}
+    {{ 'feed.css' | asset_url | stylesheet_tag }}
+    {%- render 'theme-tokens' -%}
     {%- if settings.page_transitions -%}
       <style>@view-transition { navigation: auto; }</style>
     {%- endif -%}
@@ -51,8 +51,6 @@
             html.style.setProperty('--warp-y', nav.y + 'px');
             html.classList.add('is-arriving');
             if (nav.dir) html.classList.add('dir-' + nav.dir);
-          } else if ({{ settings.intro_loader | json }} && !reduced && !sessionStorage.getItem('chargix:intro')) {
-            html.classList.add('has-intro');
           }
           sessionStorage.setItem('chargix:intro', '1');
         } catch (e) {}
@@ -73,18 +71,16 @@
     {%- if settings.smooth_scroll -%}
       <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
     {%- endif -%}
-    <script src="{{ 'luxe.js' | asset_url }}" defer></script>
-    {%- if settings.ambient_circuit -%}
-      <script src="{{ 'ambient.js' | asset_url }}" defer></script>
-    {%- endif -%}
+    <script src="{{ 'feed.js' | asset_url }}" defer></script>
 
     {{ content_for_header }}
   </head>
 
   <body class="template-{{ template.name }}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}" data-smooth="{{ settings.smooth_scroll }}">
-    {% render 'ambient' %}
+    <div class="bg-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     <div class="charge-bar" aria-hidden="true"><span></span></div>
+    <div class="swipe-cover" aria-hidden="true"></div>
 
     {% sections 'header-group' %}
 
@@ -96,6 +92,6 @@
 
     {% render 'cart-drawer' %}
 
-    <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="sticker-cursor" aria-hidden="true"><span></span></div>
   </body>
 </html>

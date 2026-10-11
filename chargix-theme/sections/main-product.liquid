@@ -3,7 +3,7 @@
 <section class="pdp" data-product data-section="{{ section.id }}">
   <div class="container pdp__grid">
     <div class="pdp__gallery">
-      <div class="pdp__stage" data-tilt data-tilt-strength="6">
+      <div class="pdp__stage" tabindex="0" aria-label="{{ 'products.gallery' | t }}">
         <div class="pdp__stage-glow" aria-hidden="true"></div>
         <div class="pdp__main" data-shared-target>
           {%- if featured -%}

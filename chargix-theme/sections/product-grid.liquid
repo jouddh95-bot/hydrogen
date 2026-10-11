@@ -1,8 +1,8 @@
 <section class="grid-section section">
   <div class="container section__head">
     <div>
-      <p class="eyebrow reveal">{{ section.settings.eyebrow }}</p>
-      <h2 class="h2 reveal" style="--i:1">{{ section.settings.heading }}</h2>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="h2" data-bounce>{{ section.settings.heading }}</h2>
     </div>
     {%- if section.settings.collection != blank -%}
       <a class="link-arrow" href="{{ section.settings.collection.url }}">{{ 'collections.view_all' | t }} {% render 'icon', icon: 'arrow' %}</a>

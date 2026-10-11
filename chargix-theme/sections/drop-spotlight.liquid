@@ -1,0 +1,48 @@
+{%- comment -%}
+  The drop: one hero product on a spinning colour disc, with a giant outlined
+  word sliding behind it. The disc turns and the product rises as you scroll.
+{%- endcomment -%}
+{%- assign p = section.settings.product -%}
+{%- if p != blank -%}
+  {%- assign v = p.selected_or_first_available_variant -%}
+  <section class="drop section" data-drop>
+    <div class="drop__word" aria-hidden="true" data-drop-word><span>{{ section.settings.word }}</span><span>{{ section.settings.word }}</span><span>{{ section.settings.word }}</span></div>
+    <div class="container drop__grid">
+      <a class="drop__visual" href="{{ p.url }}" data-product-link aria-label="{{ p.title | escape }}">
+        <span class="drop__disc" aria-hidden="true" data-drop-disc></span>
+        <span class="drop__img" data-shared-media data-drop-img>
+          {%- if p.featured_media -%}{{ p.featured_media | image_url: width: 1100 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}
+        </span>
+        <span class="drop__sticker">{% render 'icon', icon: 'sparkle' %} {{ section.settings.tag }}</span>
+      </a>
+      <div class="drop__info">
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="h2 drop__title" data-bounce>{{ p.title | escape | truncatewords: 6 }}</h2>
+        <ul class="drop__specs">
+          {%- assign specs = section.settings.specs | newline_to_br | split: '<br />' -%}
+          {%- for s in specs -%}{%- assign t = s | strip -%}{%- if t != blank -%}<li style="--i: {{ forloop.index0 }}">{{ t }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+        <div class="drop__buy">
+          {% render 'price', product: p %}
+          <a class="btn btn--pop btn--lg" href="{{ p.url }}" data-product-link data-magnetic>{{ section.settings.cta }} {% render 'icon', icon: 'arrow' %}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "The drop",
+  "class": "section-drop",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The showpiece" },
+    { "type": "text", "id": "word", "label": "Big word behind", "default": "DROP" },
+    { "type": "text", "id": "tag", "label": "Sticker", "default": "Just landed" },
+    { "type": "textarea", "id": "specs", "label": "Highlights (one per line)" },
+    { "type": "text", "id": "cta", "label": "Button", "default": "See it up close" }
+  ],
+  "presets": [{ "name": "The drop" }]
+}
+{% endschema %}

@@ -1,7 +1,7 @@
 <section class="cats section">
   <div class="container">
-    <p class="eyebrow reveal">{{ 'collections.all_categories' | t }}</p>
-    <h1 class="h1 reveal" style="--i:1">{{ section.settings.heading }}</h1>
+    <p class="eyebrow">{{ 'collections.all_categories' | t }}</p>
+    <h1 class="h1 cats__title" data-bounce>{{ section.settings.heading }}</h1>
   </div>
   <div class="container cats__grid">
     {%- assign hues = '330,25,275,165,300,45,5,85,350,190' | split: ',' -%}
@@ -28,7 +28,7 @@
   "name": "Category list",
   "class": "section-list-collections",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Every way to charge, mount and shoot" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pick your vibe" }
   ]
 }
 {% endschema %}

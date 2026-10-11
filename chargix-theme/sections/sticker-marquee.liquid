@@ -1,0 +1,29 @@
+{%- comment -%}
+  Two tilted ticker tapes crossing like stickers on a laptop lid. They run in
+  opposite directions and speed up with the visitor's scroll (assets/feed.js).
+{%- endcomment -%}
+{%- assign words = section.settings.words | split: ',' -%}
+<section class="tapes" data-tapes aria-label="{{ section.settings.words | escape }}">
+  {%- for t in (1..2) -%}
+    <div class="tape tape--{{ t }}" data-tape data-dir="{% if t == 1 %}-1{% else %}1{% endif %}" aria-hidden="true">
+      <div class="tape__track" data-tape-track>
+        {%- for r in (1..4) -%}
+          {%- for w in words -%}
+            <span class="tape__word">{{ w | strip }}</span>{% render 'icon', icon: 'sparkle' %}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Sticker tapes",
+  "class": "section-tapes",
+  "settings": [
+    { "type": "text", "id": "words", "label": "Words (comma separated)", "default": "Viral tech, Free US shipping, 30-day returns, Tested by us, New drops weekly" }
+  ],
+  "presets": [{ "name": "Sticker tapes" }]
+}
+{% endschema %}

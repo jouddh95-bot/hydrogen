@@ -32,6 +32,11 @@
       <h1 class="plp__title" data-split>{{ collection.title | escape }}</h1>
       {%- if collection.description != blank -%}<div class="plp__desc rte">{{ collection.description }}</div>{%- endif -%}
       <p class="plp__count"><span class="mono">{{ collection.products_count }}</span> {{ 'collections.items' | t }}</p>
+      <div class="plp__stickers" aria-hidden="true">
+        {%- for p in collection.products limit: 3 -%}
+          {%- if p.featured_media -%}<span class="plp__sticker plp__sticker--{{ forloop.index }}">{{ p.featured_media | image_url: width: 400 | image_tag: loading: 'eager', alt: '' }}</span>{%- endif -%}
+        {%- endfor -%}
+      </div>
     </div>
   </header>
 
