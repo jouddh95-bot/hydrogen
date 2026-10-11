@@ -546,40 +546,41 @@ main.page, .section-footer, .footer { position: relative; z-index: 1; }
 @keyframes burst { from { transform: translate(0, 0) rotate(0) scale(1); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--dr)) scale(0.3); opacity: 0; } }
 
 /* =========================================================
-   Page transitions
-   Default: the page swipes up like the next video in a feed.
-   Product to product (next / previous): a sideways card swipe.
-   The clicked product photo morphs into the product page.
+   Page transitions (driven by motion.js, same in every browser)
+   A colour panel swipes over the page like the next video in a feed,
+   sideways for next / previous product. The clicked photo rides on top
+   and lands on the next product page.
    ========================================================= */
-::view-transition-group(root) { animation-duration: 0.7s; }
-::view-transition-old(root) { animation: 0.7s cubic-bezier(0.7, 0, 0.25, 1) both feed-old-up; }
-::view-transition-new(root) { animation: 0.7s cubic-bezier(0.7, 0, 0.25, 1) both feed-new-up; }
-@keyframes feed-old-up { to { transform: translateY(-22%) scale(0.9); opacity: 0.4; border-radius: 40px; filter: saturate(0.6); } }
-@keyframes feed-new-up { from { transform: translateY(100%); border-radius: 40px; } to { transform: none; border-radius: 0; } }
-html.dir-next::view-transition-old(root) { animation-name: feed-old-left; }
-html.dir-next::view-transition-new(root) { animation-name: feed-new-right; }
-html.dir-prev::view-transition-old(root) { animation-name: feed-old-right; }
-html.dir-prev::view-transition-new(root) { animation-name: feed-new-left; }
-@keyframes feed-old-left { to { transform: translateX(-30%) rotate(-4deg) scale(0.86); opacity: 0.3; border-radius: 40px; } }
-@keyframes feed-old-right { to { transform: translateX(30%) rotate(4deg) scale(0.86); opacity: 0.3; border-radius: 40px; } }
-@keyframes feed-new-right { from { transform: translateX(105%) rotate(6deg); border-radius: 40px; } to { transform: none; border-radius: 0; } }
-@keyframes feed-new-left { from { transform: translateX(-105%) rotate(-6deg); border-radius: 40px; } to { transform: none; border-radius: 0; } }
-::view-transition-group(product-media) { animation-duration: 0.75s; animation-timing-function: cubic-bezier(0.3, 1.25, 0.4, 1); z-index: 3; }
-::view-transition-old(product-media), ::view-transition-new(product-media) { height: 100%; object-fit: cover; border-radius: 28px; overflow: hidden; }
-::view-transition-group(site-header) { z-index: 4; animation-duration: 0.5s; }
-::view-transition-old(site-header) { display: none; }
-::view-transition-new(site-header) { animation: none; }
-.section-header { view-transition-name: site-header; }
-
-/* Browsers without cross-document transitions: swipe the page out, then in. */
-html.is-warping main.page, html.is-warping .section-footer { transform: translateY(-14%) scale(0.94); opacity: 0; transition: transform 0.5s cubic-bezier(0.7, 0, 0.25, 1), opacity 0.45s; }
-html.is-warping.dir-next main.page { transform: translateX(-18%) rotate(-3deg); }
-html:not(.vt-supported).is-arriving main.page { animation: arrive-up 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
-html:not(.vt-supported).is-arriving.dir-next main.page { animation-name: arrive-right; }
-html:not(.vt-supported).is-arriving.dir-prev main.page { animation-name: arrive-left; }
-@keyframes arrive-up { from { transform: translateY(18vh); opacity: 0; } }
-@keyframes arrive-right { from { transform: translateX(30vw) rotate(4deg); opacity: 0; } }
-@keyframes arrive-left { from { transform: translateX(-30vw) rotate(-4deg); opacity: 0; } }
+.swipe-cover {
+  position: fixed; inset: 0; z-index: 140; pointer-events: none; visibility: hidden;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--cover, var(--pink)); transform: translate3d(0, 101%, 0);
+}
+.swipe-cover__word { font: 900 clamp(5rem, 24vw, 22rem)/0.8 var(--f-display); letter-spacing: -0.07em; color: transparent; -webkit-text-stroke: 2px rgba(18, 12, 31, 0.22); white-space: nowrap; transform: rotate(-6deg); }
+html.dir-next .swipe-cover { transform: translate3d(101%, 0, 0); }
+html.dir-prev .swipe-cover { transform: translate3d(-101%, 0, 0); }
+html.is-leaving .swipe-cover { visibility: visible; transform: none; transition: transform 0.46s cubic-bezier(0.7, 0, 0.2, 1); }
+html.is-leaving main.page { transform: translateY(-6vh) scale(0.96); transition: transform 0.46s cubic-bezier(0.7, 0, 0.2, 1); }
+html.is-leaving.dir-next main.page { transform: translateX(-8vw) rotate(-1.5deg); }
+html.is-leaving.dir-prev main.page { transform: translateX(8vw) rotate(1.5deg); }
+html.is-leaving .page { opacity: 1; }
+html.is-arriving .swipe-cover { visibility: visible; transform: none; transition: none; }
+html.is-arriving.is-revealed .swipe-cover { transform: translate3d(0, -101%, 0); transition: transform 0.6s cubic-bezier(0.7, 0, 0.2, 1); }
+html.is-arriving.is-revealed.dir-next .swipe-cover { transform: translate3d(-101%, 0, 0); }
+html.is-arriving.is-revealed.dir-prev .swipe-cover { transform: translate3d(101%, 0, 0); }
+html.is-arriving.is-revealed main.page { animation: arrive-up 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+html.is-arriving.is-revealed.dir-next main.page { animation-name: arrive-right; }
+html.is-arriving.is-revealed.dir-prev main.page { animation-name: arrive-left; }
+@keyframes arrive-up { from { transform: translateY(12vh) scale(0.97); } }
+@keyframes arrive-right { from { transform: translateX(18vw) rotate(2deg); } }
+@keyframes arrive-left { from { transform: translateX(-18vw) rotate(-2deg); } }
+.arrive-img {
+  position: fixed; z-index: 141; inset: 0; margin: auto; pointer-events: none;
+  width: min(62vw, 56vh, 520px); height: min(62vw, 56vh, 520px); object-fit: cover;
+  border: 3px solid var(--ink-0); border-radius: 28px; background: #fff; box-shadow: 10px 10px 0 var(--ink-0);
+  transform-origin: 0 0;
+}
+html:not(.is-arriving):not(.is-leaving) .arrive-img:not(.is-flying) { display: none; }
 .warp, .warp-ring, .intro, .ambient, .cursor-ring, .cursor-glow { display: none !important; }
 
 /* Smooth scrolling (Lenis) */
@@ -601,7 +602,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  .swipe-cover, .arrive-img { display: none !important; }
   [data-bounce] .ch { opacity: 1 !important; transform: none !important; animation: none !important; }
   .bg-blobs i, .fhero__mesh i, .drop__sticker { animation: none; }
 }
@@ -624,3 +625,50 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 749px) { .plp__stickers { opacity: 0.35; width: 70%; } .plp__sticker--3 { display: none; } }
 @media (prefers-reduced-motion: reduce) { .plp__sticker { animation: none; } }
 .cats__title { font-size: clamp(2.8rem, 1.4rem + 6vw, 7rem); letter-spacing: -0.055em; margin: 0 0 clamp(28px, 4vw, 56px); }
+
+/* =========================================================
+   Performance pass: no live blur, no backdrop-filter, no endless
+   blurred animations. Same look from flat gradients.
+   ========================================================= */
+.page { animation: none; }
+.section-header, .pdp__main, .pdp__title, .plp__title { view-transition-name: none; }
+.bg-blobs { background:
+  radial-gradient(38vmax 38vmax at 0% 62%, rgba(255, 194, 222, 0.5), transparent 70%),
+  radial-gradient(40vmax 40vmax at 100% 0%, rgba(217, 206, 255, 0.55), transparent 70%),
+  radial-gradient(36vmax 36vmax at 80% 110%, rgba(232, 255, 176, 0.5), transparent 70%); }
+.bg-blobs i { display: none; }
+.fhero__mesh { background:
+  radial-gradient(34% 46% at 12% 8%, var(--pink), transparent 72%),
+  radial-gradient(30% 44% at 92% 38%, var(--orange), transparent 72%),
+  radial-gradient(30% 40% at 52% 108%, #b46bff, transparent 72%),
+  radial-gradient(14% 18% at 66% 84%, rgba(200, 255, 46, 0.6), transparent 72%); }
+.fhero__mesh i { display: none; }
+[data-bounce] .ch { will-change: auto; }
+.header__inner, .plp__bar { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255, 255, 255, 0.95); }
+.mega__list, .sticky-buy, .fhero__chips li, .reel__act, .drawer__scrim, .menu-drawer, .btn--ghost, .spotlight__tag, .readout__specs li { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.sticky-buy { background: rgba(255, 255, 255, 0.96); }
+.fhero__chips li { background: rgba(255, 255, 255, 0.22); }
+.reel__act { background: rgba(18, 12, 31, 0.35); }
+.pdp__stage-glow, .spotlight__orb { filter: none; }
+.pdp__stage-glow { background: radial-gradient(closest-side, rgba(255, 46, 136, 0.28), transparent); }
+.plp__aurora { filter: none; animation: none; }
+.search-dialog::backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* Header: the pill keeps its size while scrolling, links never wrap; links
+   that do not fit move into a "More" menu (feed.js). */
+.header__inner { transition: box-shadow 0.3s; }
+.is-scrolled .header__inner { max-width: 1280px; height: 64px; box-shadow: 5px 5px 0 var(--ink-0); }
+.nav__link { white-space: nowrap; }
+.nav__more { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; cursor: pointer; font: inherit; }
+.nav__more .icon { width: 14px; height: 14px; transform: rotate(90deg); }
+.nav__item--more .mega { left: auto; right: 0; }
+.nav__item.is-hidden { display: none; }
+.mega__list .mega__sub { padding-left: 26px; font-weight: 500; font-size: 0.9rem; }
+@media (min-width: 1100px) {
+  .header__logo { margin-right: 8px; flex: none; }
+  .header__nav { flex: 1 1 auto; min-width: 0; }
+  html.js .header__nav:not(.is-fit) { overflow: hidden; }
+  .nav { flex-wrap: nowrap; gap: 2px; }
+  .nav__link { padding: 9px 12px; font-size: 0.9rem; }
+  .header__actions { flex: none; margin-left: 0; }
+}

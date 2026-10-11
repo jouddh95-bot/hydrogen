@@ -29,30 +29,27 @@
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'feed.css' | asset_url | stylesheet_tag }}
     {%- render 'theme-tokens' -%}
-    {%- if settings.page_transitions -%}
-      <style>@view-transition { navigation: auto; }</style>
-    {%- endif -%}
 
     <script type="importmap">
       { "imports": { "three": "{{ 'three.module.min.js' | asset_url }}" } }
     </script>
     <script>
       document.documentElement.classList.replace('no-js', 'js');
-      if ('onpagereveal' in window && {{ settings.page_transitions | json }}) document.documentElement.classList.add('vt');
-      /* Arriving from another ChargiX page: start the reveal from where the
-         visitor clicked. First visit of the session: play the charging intro. */
+      /* Arriving from another ChargiX page: the coloured cover that swiped in
+         on the last page is still on screen at first paint, then slides away
+         (motion.js). Bounded so a slow or failed script never leaves it up. */
       (function (html) {
         var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         try {
           var nav = JSON.parse(sessionStorage.getItem('chargix:nav') || 'null');
           sessionStorage.removeItem('chargix:nav');
-          if (nav && Date.now() - nav.t < 6000 && !reduced) {
-            html.style.setProperty('--warp-x', nav.x + 'px');
-            html.style.setProperty('--warp-y', nav.y + 'px');
+          if (nav && Date.now() - nav.t < 8000 && !reduced && {{ settings.page_transitions | json }}) {
             html.classList.add('is-arriving');
             if (nav.dir) html.classList.add('dir-' + nav.dir);
+            if (nav.color) html.style.setProperty('--cover', nav.color);
+            window.__cxNav = nav;
+            setTimeout(function () { html.classList.add('is-revealed'); }, 2500);
           }
-          sessionStorage.setItem('chargix:intro', '1');
         } catch (e) {}
       })(document.documentElement);
       window.Chargix = {
@@ -80,7 +77,17 @@
     <div class="bg-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     <div class="charge-bar" aria-hidden="true"><span></span></div>
-    <div class="swipe-cover" aria-hidden="true"></div>
+    <div class="swipe-cover" aria-hidden="true"><span class="swipe-cover__word">chargix</span></div>
+    <script>
+      (function (nav) {
+        if (!nav || !nav.img) return;
+        var img = document.createElement('img');
+        img.className = 'arrive-img';
+        img.alt = '';
+        img.src = nav.img;
+        document.body.appendChild(img);
+      })(window.__cxNav);
+    </script>
 
     {% sections 'header-group' %}
 

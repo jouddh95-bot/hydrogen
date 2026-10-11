@@ -5,9 +5,7 @@
   const body = document.body;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const supportsCrossDocVT = 'onpagereveal' in window && CSS.supports('view-transition-name: x');
   const transitionsOn = body.dataset.transitions !== 'false';
-  if (supportsCrossDocVT) root.classList.add('vt-supported');
 
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
@@ -18,78 +16,134 @@
   window.addEventListener('scroll', onScroll, { passive: true });
 
   /* ---------- Page transitions ----------
-     Chrome / Edge / Safari 18.2+: native cross-document view transitions,
-     with the clicked product image morphing into the product page hero.
-     Other browsers: a short fade-out before navigating. */
+     Script-driven so it plays the same in every browser: a colour panel
+     swipes over the page (sideways for next / previous product), the clicked
+     product photo flies to the centre, then the browser navigates. The next
+     page paints with the same panel and photo in place (layout/theme.liquid)
+     and slides them away, landing the photo on the product hero. */
   const samePath = (a, b) => {
     try { return new URL(a, location.href).pathname === new URL(b, location.href).pathname; } catch (e) { return false; }
   };
-  const cardMediaFor = (url) => {
-    const link = $$('a[data-product-link]').find((a) => samePath(a.href, url));
-    if (!link) return null;
-    const card = link.closest('.card');
-    const dock = link.closest('.pnav__link');
-    if (dock) return $('.pnav__media', dock);
-    return (card && $('[data-shared-media]', card)) || $('.spotlight__img', link.closest('.spotlight') || document) || null;
-  };
-
   const productPath = (u) => { try { return /\/products\//.test(new URL(u, location.href).pathname); } catch (e) { return false; } };
-  const pdpMain = () => $('.pdp__main');
+  const COVERS = ['#ff2e88', '#7b5cff', '#ff7a1a', '#22e6b8', '#c8ff2e', '#ffe45c'];
+  const nextCover = () => {
+    let k = 0;
+    try { k = (parseInt(sessionStorage.getItem('chargix:cover') || '0', 10) + 1) % COVERS.length; sessionStorage.setItem('chargix:cover', k); } catch (e) {}
+    return COVERS[k];
+  };
+  const imgFor = (a) => {
+    const holder = a.closest('.card, .tcard, .scard, .reel, .pnav__link, .tile, .drop, .fhero__sticker') || a;
+    const img = $('img', holder) || $('img', a);
+    if (!img || !img.complete || !img.naturalWidth) return null;
+    const r = img.getBoundingClientRect();
+    if (r.width < 24 || r.bottom < 0 || r.top > innerHeight) return null;
+    return img;
+  };
+  const coverSize = () => Math.round(Math.min(innerWidth * 0.62, innerHeight * 0.56, 520));
+  const DIRS = ['dir-next', 'dir-prev'];
+  let leaving = false;
 
-  if (supportsCrossDocVT && transitionsOn) {
-    // Leaving: the clicked product image becomes the shared element. On a
-    // product page the current hero steps aside so the clicked card (a
-    // related product or the next/previous dock) carries the morph instead.
-    window.addEventListener('pageswap', (e) => {
-      if (!e.viewTransition || !e.activation) return;
-      const to = e.activation.entry && e.activation.entry.url;
-      if (!to || !productPath(to)) return;
-      const media = cardMediaFor(to);
-      if (!media) return;
-      const main = pdpMain();
-      if (main) main.style.viewTransitionName = 'none';
-      media.style.viewTransitionName = 'product-media';
-    });
-    // Arriving back on a listing from a product: morph into its card.
-    window.addEventListener('pagereveal', (e) => {
-      if (!e.viewTransition || !window.navigation || !navigation.activation) return;
-      const from = navigation.activation.from && navigation.activation.from.url;
-      if (!from || !productPath(from)) return;
-      const media = cardMediaFor(from);
-      if (!media) return;
-      const main = pdpMain();
-      if (main) main.style.viewTransitionName = 'none';
-      media.style.viewTransitionName = 'product-media';
-      e.viewTransition.finished.finally(() => { media.style.viewTransitionName = ''; if (main) main.style.viewTransitionName = ''; });
-    });
-  }
+  // Warm the next page while the pointer is on its way.
+  const warmed = new Set();
+  const canSpec = HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules');
+  const warm = (a) => {
+    if (!a || a.origin !== location.origin || warmed.has(a.href) || warmed.size > 30) return;
+    if (a.matches('[data-cart-open], [data-search-open]') || samePath(a.href, location.href)) return;
+    warmed.add(a.href);
+    if (canSpec) {
+      const s = document.createElement('script');
+      s.type = 'speculationrules';
+      s.textContent = JSON.stringify({ prefetch: [{ source: 'list', urls: [a.href] }] });
+      document.head.appendChild(s);
+    } else {
+      const l = document.createElement('link');
+      l.rel = 'prefetch'; l.href = a.href;
+      document.head.appendChild(l);
+    }
+  };
+  const warmFrom = (e) => warm(e.target.closest && e.target.closest('a[href]'));
+  document.addEventListener('pointerover', warmFrom, { passive: true });
+  document.addEventListener('touchstart', warmFrom, { passive: true });
 
-  // Every internal click is a surge of current: remember where it started so
-  // the next page can open from that point (layout/theme.liquid reads it).
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (a.target && a.target !== '_self') return;
     if (a.hasAttribute('download') || a.origin !== location.origin) return;
     if (a.hash && samePath(a.href, location.href)) return;
-    if (a.matches('[data-cart-open], [data-search-open]')) return;
+    if (a.matches('[data-cart-open], [data-search-open], [data-no-swipe]')) return;
+    if (!/^https?:$/.test(a.protocol)) return;
     body.classList.add('is-navigating');
     if (!transitionsOn || reduced) return;
-    const r = a.getBoundingClientRect();
-    const x = e.clientX || r.left + r.width / 2;
-    const y = e.clientY || r.top + r.height / 2;
-    try { sessionStorage.setItem('chargix:nav', JSON.stringify({ x: Math.round(x), y: Math.round(y), t: Date.now(), dir: a.dataset.dir || '' })); } catch (err) {}
-    if (supportsCrossDocVT) return;
     e.preventDefault();
-    root.style.setProperty('--warp-x', x + 'px');
-    root.style.setProperty('--warp-y', y + 'px');
-    root.classList.remove('is-arriving');
-    root.classList.add('is-warping');
-    setTimeout(() => { location.href = a.href; }, 560);
+    if (leaving) return;
+    leaving = true;
+
+    const dir = a.dataset.dir || '';
+    const color = nextCover();
+    const img = productPath(a.href) ? imgFor(a) : null;
+    const nav = { t: Date.now(), dir, color };
+    if (img) nav.img = img.currentSrc || img.src;
+    try { sessionStorage.setItem('chargix:nav', JSON.stringify(nav)); } catch (err) {}
+
+    root.classList.remove('is-arriving', 'is-revealed', ...DIRS);
+    if (dir) root.classList.add('dir-' + dir);
+    root.style.setProperty('--cover', color);
+    void document.body.offsetWidth;
+    root.classList.add('is-leaving');
+
+    let fly = null;
+    if (img) {
+      const r = img.getBoundingClientRect();
+      const S = coverSize();
+      const L = (innerWidth - S) / 2, T = (innerHeight - S) / 2;
+      fly = document.createElement('img');
+      fly.className = 'arrive-img is-flying';
+      fly.alt = '';
+      fly.src = nav.img;
+      body.appendChild(fly);
+      fly.animate([
+        { transform: `translate(${r.left - L}px, ${r.top - T}px) scale(${r.width / S}, ${r.height / S})`, borderRadius: '40px' },
+        { transform: 'none', borderRadius: '28px' },
+      ], { duration: 560, easing: 'cubic-bezier(0.5, 0, 0.15, 1)', fill: 'both' });
+    }
+    const go = () => { location.href = a.href; };
+    setTimeout(go, img ? 560 : 460);
   });
+
+  // Arriving: slide the cover away; land the flown photo on the product hero.
+  const reveal = () => {
+    if (!root.classList.contains('is-arriving') || root.classList.contains('is-revealed-js')) return;
+    root.classList.add('is-revealed-js');
+    const fly = $('.arrive-img');
+    const main = $('.pdp__main');
+    const start = () => {
+      root.classList.add('is-revealed');
+      if (fly) {
+        const t = main && main.getBoundingClientRect();
+        const S = fly.getBoundingClientRect();
+        const frames = t && t.width
+          ? [{ transform: 'none' }, { transform: `translate(${t.left - S.left}px, ${t.top - S.top}px) scale(${t.width / S.width}, ${t.height / S.height})`, borderRadius: '28px' }]
+          : [{ transform: 'none', opacity: 1 }, { transform: 'translateY(-60vh) rotate(-8deg) scale(0.6)', opacity: 0 }];
+        const anim = fly.animate(frames, { duration: 650, easing: 'cubic-bezier(0.3, 1.15, 0.4, 1)', fill: 'forwards' });
+        anim.finished.then(() => fly.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: 'forwards' }).finished).finally(() => fly.remove());
+      }
+      setTimeout(() => root.classList.remove('is-arriving', 'is-revealed', 'is-revealed-js', ...DIRS), 900);
+    };
+    const hero = main && $('img', main);
+    const ready = hero && hero.decode ? Promise.race([hero.decode().catch(() => {}), new Promise((r) => setTimeout(r, 700))]) : Promise.resolve();
+    ready.then(() => requestAnimationFrame(start));
+  };
+  if (root.classList.contains('is-arriving')) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', reveal); else reveal();
+  }
   window.addEventListener('pageshow', (e) => {
     body.classList.remove('is-leaving', 'is-navigating');
-    if (e.persisted) root.classList.remove('is-warping');
+    if (!e.persisted) return;
+    // Back / forward cache: undo a half-played exit.
+    leaving = false;
+    root.classList.remove('is-leaving', 'is-arriving', 'is-revealed', 'is-revealed-js', ...DIRS);
+    $$('.arrive-img').forEach((el) => el.remove());
   });
 
   /* ---------- Reveal on scroll ---------- */

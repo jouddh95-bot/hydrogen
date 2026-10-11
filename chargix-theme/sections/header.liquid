@@ -12,7 +12,7 @@
       {%- endif -%}
     </a>
 
-    <nav class="header__nav" aria-label="{{ 'general.main_menu' | t }}">
+    <nav class="header__nav" data-nav aria-label="{{ 'general.main_menu' | t }}">
       <ul class="nav">
         {%- for link in section.settings.menu.links -%}
           <li class="nav__item{% if link.links != blank %} nav__item--has-children{% endif %}">
@@ -28,6 +28,10 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
+        <li class="nav__item nav__item--more nav__item--has-children" data-nav-more hidden>
+          <button class="nav__link nav__more" type="button" aria-haspopup="true">More {% render 'icon', icon: 'arrow' %}</button>
+          <div class="mega"><ul class="mega__list" data-nav-more-list></ul></div>
+        </li>
       </ul>
     </nav>
 

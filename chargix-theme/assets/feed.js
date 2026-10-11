@@ -12,13 +12,43 @@
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  /* ---------- Arrival: clear direction classes once the swipe has played ---------- */
-  if (html.classList.contains('is-arriving')) {
-    setTimeout(() => html.classList.remove('is-arriving', 'dir-next', 'dir-prev'), 1000);
+  /* ---------- Header: links that do not fit go into "More" ---------- */
+  const navEl = $('[data-nav]');
+  if (navEl) {
+    const list = $('.nav', navEl);
+    const more = $('[data-nav-more]', navEl);
+    const moreList = $('[data-nav-more-list]', navEl);
+    const items = $$(':scope > .nav__item:not([data-nav-more])', list);
+    const fit = () => {
+      items.forEach((li) => li.classList.remove('is-hidden'));
+      more.hidden = true;
+      navEl.classList.remove('is-fit');
+      if (!navEl.offsetWidth) return;
+      const over = () => list.scrollWidth > navEl.clientWidth + 1;
+      if (over()) {
+        more.hidden = false;
+        for (let k = items.length - 1; k > 0 && over(); k--) items[k].classList.add('is-hidden');
+      }
+      moreList.innerHTML = '';
+      items.filter((li) => li.classList.contains('is-hidden')).forEach((li) => {
+        $$('a', li).forEach((a, j) => {
+          const row = document.createElement('li');
+          const link = document.createElement('a');
+          link.className = 'mega__link' + (j ? ' mega__sub' : '');
+          link.href = a.href;
+          link.textContent = a.textContent.trim();
+          row.appendChild(link);
+          moreList.appendChild(row);
+        });
+      });
+      navEl.classList.add('is-fit');
+    };
+    fit();
+    let fitT = 0;
+    window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(fit, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    window.addEventListener('load', fit);
   }
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted) html.classList.remove('is-warping', 'is-arriving', 'dir-next', 'dir-prev');
-  });
 
   /* ---------- Bouncing headlines: split into words and letters ---------- */
   const bouncers = $$('[data-bounce]');
@@ -116,15 +146,25 @@
     }
   });
 
-  /* ---------- Scroll-linked effects share one loop ---------- */
+  /* ---------- Scroll-linked effects share one loop ----------
+     Each effect only runs while its section is on screen. */
   const scrollers = [];
   let lastY = window.scrollY, velocity = 0, ticking = false;
+  const near = new WeakMap();
+  const nearIO = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => entries.forEach((en) => near.set(en.target, en.isIntersecting)), { rootMargin: '25% 0px' })
+    : null;
+  const addScroller = (el, fn) => {
+    near.set(el, true);
+    if (nearIO) nearIO.observe(el);
+    scrollers.push({ el, fn });
+  };
   const runScroll = () => {
     ticking = false;
     const y = window.scrollY;
-    velocity = y - lastY;
+    if (y !== lastY) velocity = y - lastY;
     lastY = y;
-    scrollers.forEach((fn) => fn(y));
+    scrollers.forEach((s) => { if (near.get(s.el)) s.fn(y); });
   };
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(runScroll); } }, { passive: true });
   window.addEventListener('resize', () => requestAnimationFrame(runScroll));
@@ -136,8 +176,9 @@
     const measure = () => state.forEach((s) => { s.w = s.el.scrollWidth / 4; });
     measure();
     window.addEventListener('resize', measure);
-    let boost = 0, flip = 1, last = performance.now();
+    let boost = 0, flip = 1, last = performance.now(), running = false, onScreen = true;
     const frame = (now) => {
+      if (!onScreen || document.hidden) { running = false; return; }
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
       boost += (Math.min(Math.abs(velocity) * 6, 900) - boost) * 0.08;
@@ -151,7 +192,18 @@
       });
       requestAnimationFrame(frame);
     };
-    requestAnimationFrame(frame);
+    const start = () => { if (running || !onScreen || document.hidden) return; running = true; last = performance.now(); requestAnimationFrame(frame); };
+    if ('IntersectionObserver' in window) {
+      const seen = new Set();
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
+        onScreen = seen.size > 0;
+        start();
+      });
+      tapes.forEach((t) => io.observe(t));
+    }
+    document.addEventListener('visibilitychange', start);
+    start();
   }
 
   /* ---------- Trending reel: pin the section and slide the row ---------- */
@@ -186,13 +238,15 @@
     layout();
     desktop.addEventListener('change', () => { layout(); runScroll(); });
     window.addEventListener('resize', layout);
-    window.addEventListener('load', layout);
-    scrollers.push(() => {
+    window.addEventListener('load', () => { layout(); runScroll(); });
+    if ('ResizeObserver' in window) new ResizeObserver(() => { layout(); runScroll(); }).observe(track);
+    let shown = -1;
+    addScroller(sec, () => {
       if (!sec.classList.contains('is-pinned')) return;
       const r = sec.getBoundingClientRect();
       const p = dist ? clamp(-r.top / dist, 0, 1) : 0;
-      track.style.transform = `translate3d(${-p * dist}px, 0, 0)`;
-      setCount(p);
+      track.style.transform = `translate3d(${(-p * dist).toFixed(1)}px, 0, 0)`;
+      if (Math.abs(p - shown) > 0.002) { shown = p; setCount(p); }
     });
     track.addEventListener('scroll', () => {
       if (sec.classList.contains('is-pinned')) return;
@@ -207,7 +261,7 @@
     const cards = $$('[data-scard]', stack);
     const wide = window.matchMedia('(min-width: 900px)');
     if (reduced || cards.length < 2) return;
-    scrollers.push(() => {
+    addScroller(stack, () => {
       if (!wide.matches) { cards.forEach((c) => { c.style.transform = ''; c.style.filter = ''; }); return; }
       cards.forEach((c, i) => {
         const next = cards[i + 1];
@@ -227,7 +281,7 @@
     const disc = $('[data-drop-disc]', drop);
     const img = $('[data-drop-img]', drop);
     const word = $('[data-drop-word]', drop);
-    scrollers.push(() => {
+    addScroller(drop, () => {
       const r = drop.getBoundingClientRect();
       const vh = window.innerHeight;
       if (r.bottom < 0 || r.top > vh) return;
@@ -297,8 +351,11 @@
 
   /* ---------- Smooth, weighted scrolling ---------- */
   if (window.Lenis && body.dataset.smooth !== 'false' && fine) {
-    const lenis = new window.Lenis({ lerp: 0.09, wheelMultiplier: 0.95, smoothWheel: true });
+    const lenis = new window.Lenis({ lerp: 0.14, wheelMultiplier: 1, smoothWheel: true });
     window.ChargixLenis = lenis;
+    // run the scroll effects in the same frame Lenis moves the page, so pinned
+    // and sliding pieces never trail a frame behind
+    lenis.on('scroll', runScroll);
     const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
     new MutationObserver(() => (body.style.overflow === 'hidden' ? lenis.stop() : lenis.start()))
