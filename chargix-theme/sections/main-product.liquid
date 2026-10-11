@@ -75,6 +75,53 @@
         <li>{% render 'icon', icon: 'lock' %} {{ 'products.perk_secure' | t }}</li>
       </ul>
 
+      {%- if section.settings.show_neighbors -%}
+        {%- liquid
+          assign source = collection | default: product.collections.first | default: collections.all
+          assign list = source.products
+          assign prev_p = nil
+          assign next_p = nil
+          assign found = false
+          for p in list
+            if found
+              assign next_p = p
+              break
+            endif
+            if p.id == product.id
+              assign found = true
+            else
+              assign prev_p = p
+            endif
+          endfor
+          if found
+            if next_p == nil and list.size > 1
+              assign next_p = list.first
+            endif
+            if prev_p == nil and list.size > 1
+              assign prev_p = list.last
+            endif
+          else
+            assign prev_p = nil
+          endif
+        -%}
+        {%- if prev_p or next_p -%}
+          <nav class="pnav" aria-label="{{ 'products.more' | t }}">
+            {%- if prev_p and prev_p.id != product.id -%}
+              <a class="pnav__link pnav__link--prev" href="{{ prev_p.url | within: source }}" data-product-link data-dir="prev">
+                <span class="pnav__media">{{ prev_p.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</span>
+                <span><span class="pnav__dir">&larr; {{ 'products.previous' | t }}</span><span class="pnav__title">{{ prev_p.title | escape }}</span></span>
+              </a>
+            {%- else -%}<span></span>{%- endif -%}
+            {%- if next_p and next_p.id != product.id -%}
+              <a class="pnav__link pnav__link--next" href="{{ next_p.url | within: source }}" data-product-link data-dir="next">
+                <span class="pnav__media">{{ next_p.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</span>
+                <span><span class="pnav__dir">{{ 'products.next' | t }} &rarr;</span><span class="pnav__title">{{ next_p.title | escape }}</span></span>
+              </a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+
       <div class="pdp__desc rte">{{ product.description }}</div>
     </div>
   </div>
@@ -95,7 +142,8 @@
   "name": "Product",
   "class": "section-main-product",
   "settings": [
-    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / Buy now button", "default": true }
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / Buy now button", "default": true },
+    { "type": "checkbox", "id": "show_neighbors", "label": "Show previous / next product", "default": true }
   ]
 }
 {% endschema %}

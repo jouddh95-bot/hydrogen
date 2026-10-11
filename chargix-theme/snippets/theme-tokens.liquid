@@ -9,6 +9,8 @@
     --volt-rgb: {{ settings.color_volt.red }}, {{ settings.color_volt.green }}, {{ settings.color_volt.blue }};
     --spark: {{ settings.color_spark }};
     --spark-rgb: {{ settings.color_spark.red }}, {{ settings.color_spark.green }}, {{ settings.color_spark.blue }};
+    --lux: {{ settings.color_lux | default: "#e6c98f" }};
+    --lux-rgb: {{ settings.color_lux.red | default: 230 }}, {{ settings.color_lux.green | default: 201 }}, {{ settings.color_lux.blue | default: 143 }};
     --radius: {{ settings.radius }}px;
     color-scheme: dark;
   }

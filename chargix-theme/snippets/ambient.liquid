@@ -1,0 +1,38 @@
+{%- comment -%}
+  Site-wide ambience behind every page: drifting aurora light, a printed-circuit
+  field with current pulses (assets/ambient.js), a fine dot grid, film grain and
+  a vignette. Also holds the page-warp overlay and the first-visit intro.
+{%- endcomment -%}
+<div class="ambient" aria-hidden="true">
+  <div class="ambient__aurora"><i></i><i></i><i></i></div>
+  {%- if settings.ambient_circuit -%}
+    <canvas class="ambient__circuit" data-ambient-circuit></canvas>
+  {%- endif -%}
+  <div class="ambient__grid"></div>
+  <div class="ambient__beam"></div>
+  <div class="ambient__grain"></div>
+  <div class="ambient__vignette"></div>
+</div>
+
+<div class="warp" aria-hidden="true">
+  <div class="warp__ring"></div>
+  <div class="warp__core">
+    <span class="wordmark">Chargi<span class="wordmark__x">X</span></span>
+    <span class="warp__line"><span></span></span>
+  </div>
+</div>
+<div class="warp-ring" aria-hidden="true"></div>
+
+{%- if settings.intro_loader -%}
+  <div class="intro" aria-hidden="true">
+    <div class="intro__half intro__half--top"></div>
+    <div class="intro__half intro__half--bottom"></div>
+    <div class="intro__core">
+      <span class="intro__mark wordmark">Chargi<span class="wordmark__x">X</span></span>
+      <span class="intro__bar"><span></span></span>
+      <span class="intro__readout mono"><span>Charging</span><b data-intro-pct>0</b>%</span>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="cursor-ring" aria-hidden="true"><span class="cursor-ring__label"></span></div>

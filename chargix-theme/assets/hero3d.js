@@ -111,7 +111,11 @@ function init() {
         float d = distance(vUv, vec2(0.5));
         float g = smoothstep(0.5, 0.0, d);
         vec3 hue = mix(uVolt, uSpark, smoothstep(0.55, 1.0, uCharge));
-        gl_FragColor = vec4(hue * g * g * g * (0.28 + uCharge * 0.3 + uPulse * 0.8), 1.0);
+        vec3 c = hue * g * g * g * (0.28 + uCharge * 0.3 + uPulse * 0.8);
+        // Alpha follows brightness so the halo glows over the page instead of
+        // painting an opaque black panel behind it.
+        float a = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
+        gl_FragColor = vec4(c / max(a, 0.001), a);
       }`,
   });
   const halo = new THREE.Mesh(new THREE.PlaneGeometry(7, 7), haloMat);

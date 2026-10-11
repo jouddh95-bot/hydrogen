@@ -9,7 +9,10 @@
     "radius": 18,
     "page_transitions": true,
     "cursor_glow": true,
-    "free_ship_threshold": 0
+    "free_ship_threshold": 0,
+    "color_lux": "#e6c98f",
+    "ambient_circuit": true,
+    "intro_loader": true
   },
   "presets": {}
 }

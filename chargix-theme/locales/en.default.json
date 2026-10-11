@@ -17,7 +17,9 @@
     "404_title": "This page ran out of battery",
     "404_text": "The link may be old or mistyped. Everything else is fully charged."
   },
-  "accessibility": { "skip_to_content": "Skip to content" },
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
   "products": {
     "add_to_cart": "Add to cart",
     "added": "Charged into your cart",
@@ -32,7 +34,10 @@
     "view_image": "Show image {{ number }}",
     "perk_shipping": "Free shipping across the US",
     "perk_returns": "30-day returns",
-    "perk_secure": "Secure checkout"
+    "perk_secure": "Secure checkout",
+    "previous": "Previous",
+    "next": "Next",
+    "more": "More products"
   },
   "collections": {
     "items": "items",
@@ -72,5 +77,8 @@
     "send": "Send message",
     "success": "Thanks. We'll reply within one business day."
   },
-  "gift_card": { "title": "Gift card", "expired": "This gift card is no longer active." }
+  "gift_card": {
+    "title": "Gift card",
+    "expired": "This gift card is no longer active."
+  }
 }

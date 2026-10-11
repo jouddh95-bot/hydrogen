@@ -1,6 +1,6 @@
 {
   "sections": {
-    "main": { "type": "main-product", "settings": { "show_dynamic_checkout": true } },
+    "main": { "type": "main-product", "settings": { "show_dynamic_checkout": true, "show_neighbors": true } },
     "related": { "type": "related-products", "settings": { "heading": "Complete the kit", "limit": 8 } }
   },
   "order": ["main", "related"]

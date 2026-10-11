@@ -24,10 +24,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 
     {%- render 'theme-tokens' -%}
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'luxe.css' | asset_url | stylesheet_tag }}
     {%- if settings.page_transitions -%}
       <style>@view-transition { navigation: auto; }</style>
     {%- endif -%}
@@ -37,6 +38,25 @@
     </script>
     <script>
       document.documentElement.classList.replace('no-js', 'js');
+      if ('onpagereveal' in window && {{ settings.page_transitions | json }}) document.documentElement.classList.add('vt');
+      /* Arriving from another ChargiX page: start the reveal from where the
+         visitor clicked. First visit of the session: play the charging intro. */
+      (function (html) {
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        try {
+          var nav = JSON.parse(sessionStorage.getItem('chargix:nav') || 'null');
+          sessionStorage.removeItem('chargix:nav');
+          if (nav && Date.now() - nav.t < 6000 && !reduced) {
+            html.style.setProperty('--warp-x', nav.x + 'px');
+            html.style.setProperty('--warp-y', nav.y + 'px');
+            html.classList.add('is-arriving');
+            if (nav.dir) html.classList.add('dir-' + nav.dir);
+          } else if ({{ settings.intro_loader | json }} && !reduced && !sessionStorage.getItem('chargix:intro')) {
+            html.classList.add('has-intro');
+          }
+          sessionStorage.setItem('chargix:intro', '1');
+        } catch (e) {}
+      })(document.documentElement);
       window.Chargix = {
         routes: {
           root: {{ routes.root_url | json }},
@@ -50,11 +70,16 @@
     </script>
     <script src="{{ 'motion.js' | asset_url }}" defer></script>
     <script src="{{ 'cart.js' | asset_url }}" defer></script>
+    <script src="{{ 'luxe.js' | asset_url }}" defer></script>
+    {%- if settings.ambient_circuit -%}
+      <script src="{{ 'ambient.js' | asset_url }}" defer></script>
+    {%- endif -%}
 
     {{ content_for_header }}
   </head>
 
   <body class="template-{{ template.name }}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}">
+    {% render 'ambient' %}
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     <div class="charge-bar" aria-hidden="true"><span></span></div>
 

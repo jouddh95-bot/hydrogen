@@ -28,28 +28,44 @@
     const link = $$('a[data-product-link]').find((a) => samePath(a.href, url));
     if (!link) return null;
     const card = link.closest('.card');
+    const dock = link.closest('.pnav__link');
+    if (dock) return $('.pnav__media', dock);
     return (card && $('[data-shared-media]', card)) || $('.spotlight__img', link.closest('.spotlight') || document) || null;
   };
 
+  const productPath = (u) => { try { return /\/products\//.test(new URL(u, location.href).pathname); } catch (e) { return false; } };
+  const pdpMain = () => $('.pdp__main');
+
   if (supportsCrossDocVT && transitionsOn) {
+    // Leaving: the clicked product image becomes the shared element. On a
+    // product page the current hero steps aside so the clicked card (a
+    // related product or the next/previous dock) carries the morph instead.
     window.addEventListener('pageswap', (e) => {
       if (!e.viewTransition || !e.activation) return;
       const to = e.activation.entry && e.activation.entry.url;
-      if (!to || !/\/products\//.test(new URL(to).pathname)) return;
+      if (!to || !productPath(to)) return;
       const media = cardMediaFor(to);
-      if (media && !$('.pdp__main')) media.style.viewTransitionName = 'product-media';
+      if (!media) return;
+      const main = pdpMain();
+      if (main) main.style.viewTransitionName = 'none';
+      media.style.viewTransitionName = 'product-media';
     });
+    // Arriving back on a listing from a product: morph into its card.
     window.addEventListener('pagereveal', (e) => {
       if (!e.viewTransition || !window.navigation || !navigation.activation) return;
       const from = navigation.activation.from && navigation.activation.from.url;
-      if (!from || !/\/products\//.test(new URL(from).pathname) || $('.pdp__main')) return;
+      if (!from || !productPath(from)) return;
       const media = cardMediaFor(from);
       if (!media) return;
+      const main = pdpMain();
+      if (main) main.style.viewTransitionName = 'none';
       media.style.viewTransitionName = 'product-media';
-      e.viewTransition.finished.finally(() => { media.style.viewTransitionName = ''; });
+      e.viewTransition.finished.finally(() => { media.style.viewTransitionName = ''; if (main) main.style.viewTransitionName = ''; });
     });
   }
 
+  // Every internal click is a surge of current: remember where it started so
+  // the next page can open from that point (layout/theme.liquid reads it).
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -58,12 +74,23 @@
     if (a.hash && samePath(a.href, location.href)) return;
     if (a.matches('[data-cart-open], [data-search-open]')) return;
     body.classList.add('is-navigating');
-    if (supportsCrossDocVT || !transitionsOn || reduced) return;
+    if (!transitionsOn || reduced) return;
+    const r = a.getBoundingClientRect();
+    const x = e.clientX || r.left + r.width / 2;
+    const y = e.clientY || r.top + r.height / 2;
+    try { sessionStorage.setItem('chargix:nav', JSON.stringify({ x: Math.round(x), y: Math.round(y), t: Date.now(), dir: a.dataset.dir || '' })); } catch (err) {}
+    if (supportsCrossDocVT) return;
     e.preventDefault();
-    body.classList.add('is-leaving');
-    setTimeout(() => { location.href = a.href; }, 260);
+    root.style.setProperty('--warp-x', x + 'px');
+    root.style.setProperty('--warp-y', y + 'px');
+    root.classList.remove('is-arriving');
+    root.classList.add('is-warping');
+    setTimeout(() => { location.href = a.href; }, 560);
   });
-  window.addEventListener('pageshow', () => body.classList.remove('is-leaving', 'is-navigating'));
+  window.addEventListener('pageshow', (e) => {
+    body.classList.remove('is-leaving', 'is-navigating');
+    if (e.persisted) root.classList.remove('is-warping');
+  });
 
   /* ---------- Reveal on scroll ---------- */
   const reveals = $$('.reveal');
@@ -270,23 +297,34 @@
     const stickyPrice = $('[data-sticky-price]', pdp);
     const fmt = (cents) => window.ChargixMoney ? window.ChargixMoney(cents) : (cents / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
 
-    const swapImage = (src) => {
+    // Gallery: the next image wipes across the stage with a flash of light.
+    let activeIndex = Math.max(0, thumbs.findIndex((t) => t.classList.contains('is-active')));
+    const swapImage = (src, back) => {
       if (!mainImg || !src) return;
       const full = src.startsWith('//') ? 'https:' + src : src;
       if (mainImg.currentSrc === full || mainImg.src === full) return;
-      mainImg.classList.add('is-swapping');
+      const holder = mainImg.parentElement;
       const pre = new Image();
       pre.onload = () => {
-        mainImg.removeAttribute('srcset');
-        mainImg.src = full;
-        requestAnimationFrame(() => mainImg.classList.remove('is-swapping'));
+        if (reduced) { mainImg.removeAttribute('srcset'); mainImg.src = full; return; }
+        $$('.pdp__wipe', holder).forEach((n) => n.remove());
+        pre.className = 'pdp__wipe' + (back ? ' is-back' : '');
+        pre.alt = '';
+        holder.appendChild(pre);
+        pre.addEventListener('animationend', () => {
+          mainImg.removeAttribute('srcset');
+          mainImg.src = full;
+          const done = () => pre.remove();
+          mainImg.complete ? done() : mainImg.addEventListener('load', done, { once: true });
+        }, { once: true });
       };
       pre.src = full;
     };
 
-    thumbs.forEach((t) => t.addEventListener('click', () => {
+    thumbs.forEach((t, i) => t.addEventListener('click', () => {
       thumbs.forEach((x) => x.classList.toggle('is-active', x === t));
-      swapImage(t.dataset.src);
+      swapImage(t.dataset.src, i < activeIndex);
+      activeIndex = i;
     }));
 
     const inputs = $$('[data-option-input]', pdp);
@@ -296,6 +334,8 @@
       const save = sale ? Math.round(((v.compare_at_price - v.price) / v.compare_at_price) * 100) : 0;
       priceWrap.innerHTML = `<div class="price${sale ? ' price--sale' : ''}"><span class="price__now">${fmt(v.price)}</span>${sale ? `<s class="price__was">${fmt(v.compare_at_price)}</s><span class="price__save">-${save}%</span>` : ''}</div>`;
       if (stickyPrice) stickyPrice.textContent = fmt(v.price);
+      const pr = $('.price', priceWrap);
+      if (pr && !reduced) pr.classList.add('is-flash');
     };
     inputs.forEach((input) => input.addEventListener('change', () => {
       const values = selected();
@@ -307,8 +347,10 @@
       addLabel.textContent = v.available ? (addBtn.dataset.addText || addLabel.dataset.text || 'Add to cart') : 'Sold out';
       renderPrice(v);
       if (v.featured_image) {
-        swapImage(v.featured_image.src);
-        thumbs.forEach((t) => t.classList.toggle('is-active', t.dataset.mediaId === String(v.featured_media && v.featured_media.id)));
+        const ni = thumbs.findIndex((t) => t.dataset.mediaId === String(v.featured_media && v.featured_media.id));
+        swapImage(v.featured_image.src, ni > -1 && ni < activeIndex);
+        thumbs.forEach((t, i) => t.classList.toggle('is-active', i === ni));
+        if (ni > -1) activeIndex = ni;
       }
       const url = new URL(location.href);
       url.searchParams.set('variant', v.id);
