@@ -3,18 +3,40 @@
     "hero": {
       "type": "hero-3d",
       "blocks": {
-        "spec1": { "type": "spec", "settings": { "value": "18W", "label": "PD fast charge" } },
-        "spec2": { "type": "spec", "settings": { "value": "360°", "label": "magnetic rotation" } },
-        "spec3": { "type": "spec", "settings": { "value": "30-day", "label": "returns" } }
+        "spec1": {
+          "type": "spec",
+          "settings": {
+            "value": "Viral",
+            "label": "tested picks"
+          }
+        },
+        "spec2": {
+          "type": "spec",
+          "settings": {
+            "value": "Free",
+            "label": "US shipping"
+          }
+        },
+        "spec3": {
+          "type": "spec",
+          "settings": {
+            "value": "30-day",
+            "label": "returns"
+          }
+        }
       },
-      "block_order": ["spec1", "spec2", "spec3"],
+      "block_order": [
+        "spec1",
+        "spec2",
+        "spec3"
+      ],
       "settings": {
-        "eyebrow": "Charge. Mount. Shoot.",
-        "heading": "Power that moves with you",
-        "subheading": "Fast chargers, magnetic mounts and pocket studio gear for people who film everything. Free shipping across the US.",
-        "cta_label": "Shop best sellers",
+        "eyebrow": "Curated viral tech",
+        "heading": "Tech that broke the internet.",
+        "subheading": "The gadgets that broke the internet, hand-picked, tested and shipped free across the US. Only the ones worth the hype make the cut.",
+        "cta_label": "Shop the bestsellers",
         "cta_link": "shopify://collections/best-sellers",
-        "cta2_label": "Explore categories",
+        "cta2_label": "Explore collections",
         "cta2_link": "shopify://collections",
         "orbit_collection": "best-sellers",
         "height": 90
@@ -23,67 +45,199 @@
     "trust": {
       "type": "trust-bar",
       "blocks": {
-        "t1": { "type": "item", "settings": { "icon": "truck", "title": "Free US shipping", "text": "On every order" } },
-        "t2": { "type": "item", "settings": { "icon": "return", "title": "30-day returns", "text": "Change your mind, send it back" } },
-        "t3": { "type": "item", "settings": { "icon": "lock", "title": "Secure checkout", "text": "Shop Pay, cards and wallets" } },
-        "t4": { "type": "item", "settings": { "icon": "bolt", "title": "Built for creators", "text": "Telesin-made gear" } }
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free US shipping",
+            "text": "On every order"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "30-day returns",
+            "text": "Change your mind, send it back"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Shop Pay, cards and wallets"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "title": "Curated viral tech",
+            "text": "Only what's worth the hype"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
     },
     "deck": {
       "type": "category-deck",
       "blocks": {
-        "c1": { "type": "collection", "settings": { "collection": "chargers-power", "hue": 205 } },
-        "c2": { "type": "collection", "settings": { "collection": "phone-stands-mounts", "hue": 265 } },
-        "c3": { "type": "collection", "settings": { "collection": "selfie-sticks-tripods", "hue": 175 } },
-        "c4": { "type": "collection", "settings": { "collection": "camera-grips-lighting", "hue": 320 } },
-        "c5": { "type": "collection", "settings": { "collection": "lenses-filters", "hue": 35 } },
-        "c6": { "type": "collection", "settings": { "collection": "cases-screen-protection", "hue": 150 } },
-        "c7": { "type": "collection", "settings": { "collection": "action-camera-accessories", "hue": 10 } }
+        "c1": {
+          "type": "collection",
+          "settings": {
+            "collection": "chargers-power",
+            "hue": 330
+          }
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {
+            "collection": "phone-stands-mounts",
+            "hue": 25
+          }
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {
+            "collection": "selfie-sticks-tripods",
+            "hue": 275
+          }
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {
+            "collection": "camera-grips-lighting",
+            "hue": 165
+          }
+        },
+        "c5": {
+          "type": "collection",
+          "settings": {
+            "collection": "lenses-filters",
+            "hue": 300
+          }
+        },
+        "c6": {
+          "type": "collection",
+          "settings": {
+            "collection": "cases-screen-protection",
+            "hue": 45
+          }
+        },
+        "c7": {
+          "type": "collection",
+          "settings": {
+            "collection": "action-camera-accessories",
+            "hue": 5
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
-      "settings": { "eyebrow": "Categories", "heading": "Pick your power-up" }
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7"
+      ],
+      "settings": {
+        "eyebrow": "Collections",
+        "heading": "Find your next obsession"
+      }
     },
     "bestsellers": {
       "type": "product-rail",
-      "settings": { "eyebrow": "Most loved", "heading": "Best sellers", "collection": "best-sellers", "limit": 10 }
+      "settings": {
+        "eyebrow": "Trending now",
+        "heading": "The internet's favorites",
+        "collection": "best-sellers",
+        "limit": 10
+      }
     },
     "story": {
       "type": "story-scroll",
       "blocks": {
-        "s1": { "type": "chapter", "settings": {
-          "kicker": "Charge", "title": "Never cut an adventure short",
-          "text": "<p>18W PD charging boxes refill your action-camera batteries while three card slots keep every take in one place.</p>",
-          "product": "telesin-18w-pd-fast-charger-for-dji-osmo-action-6-5pro-osmo-360-tf-card-3-slots-battery-pocket-charging-storage-box",
-          "hue": 205, "link_label": "Shop chargers", "link": "shopify://collections/chargers-power" } },
-        "s2": { "type": "chapter", "settings": {
-          "kicker": "Mount", "title": "Free your hands",
-          "text": "<p>Magnetic floor stands, suction mounts and neck mounts hold the angle so you can stay in the moment.</p>",
-          "product": "telesin-magnetic-mobile-phone-floor-stand-cantilever-live-broadcast-tablet-bracket-lifting-bracket-universal-mobile-phone-holder",
-          "hue": 265, "link_label": "Shop mounts", "link": "shopify://collections/phone-stands-mounts" } },
-        "s3": { "type": "chapter", "settings": {
-          "kicker": "Shoot", "title": "Light it like a studio",
-          "text": "<p>RGB grips, magnetic fill lights and a remote shutter turn any phone into a camera you actually want to hold.</p>",
-          "product": "telesin-magnetic-rgb-fill-light-phone-camera-shoot-hand-grip-phone-holder-shooting-aid-remote-control-handle-for-smartphone",
-          "hue": 320, "link_label": "Shop grips and lights", "link": "shopify://collections/camera-grips-lighting" } }
+        "s1": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "Discover",
+            "title": "Seen it everywhere",
+            "text": "<p>We track what's blowing up online and test it first. If it doesn't deliver, it doesn't make the shelf.</p>",
+            "product": "telesin-18w-pd-fast-charger-for-dji-osmo-action-6-5pro-osmo-360-tf-card-3-slots-battery-pocket-charging-storage-box",
+            "hue": 330,
+            "link_label": "Shop power",
+            "link": "shopify://collections/chargers-power"
+          }
+        },
+        "s2": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "Unbox",
+            "title": "Built to impress",
+            "text": "<p>Premium finishes, magnetic everything, and the kind of details people ask you about.</p>",
+            "product": "telesin-magnetic-mobile-phone-floor-stand-cantilever-live-broadcast-tablet-bracket-lifting-bracket-universal-mobile-phone-holder",
+            "hue": 275,
+            "link_label": "Shop setups",
+            "link": "shopify://collections/phone-stands-mounts"
+          }
+        },
+        "s3": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "Create",
+            "title": "Make it go viral",
+            "text": "<p>Lights, grips and lenses that turn any phone into the camera behind your next big post.</p>",
+            "product": "telesin-magnetic-rgb-fill-light-phone-camera-shoot-hand-grip-phone-holder-shooting-aid-remote-control-handle-for-smartphone",
+            "hue": 25,
+            "link_label": "Shop creator gear",
+            "link": "shopify://collections/camera-grips-lighting"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"],
-      "settings": { "eyebrow": "One kit, every shot", "heading": "From plug to perfect take" }
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "eyebrow": "Why ChargiX",
+        "heading": "From viral to your hands"
+      }
     },
     "spotlight": {
       "type": "spotlight",
       "settings": {
         "product": "telesin-portrait-lens-kit-105mm-200mm-optical-shutter-dial-3200mah-magsafe-mount-iphone-17-pro-pro-max",
-        "eyebrow": "Pocket cinema",
+        "eyebrow": "The showpiece",
         "tag": "105mm + 200mm optics",
         "specs": "105mm + 200mm optical portrait lenses\nManual EV, ISO, shutter and white balance\n3,200mAh built-in battery\nMagSafe mount",
-        "hue": 35
+        "hue": 300
       }
     },
     "all": {
       "type": "product-grid",
-      "settings": { "eyebrow": "The full kit", "heading": "All gear", "collection": "all", "limit": 8 }
+      "settings": {
+        "eyebrow": "The collection",
+        "heading": "Everything worth the hype",
+        "collection": "all",
+        "limit": 8
+      }
     }
   },
-  "order": ["hero", "trust", "deck", "bestsellers", "story", "spotlight", "all"]
+  "order": [
+    "hero",
+    "trust",
+    "deck",
+    "bestsellers",
+    "story",
+    "spotlight",
+    "all"
+  ]
 }

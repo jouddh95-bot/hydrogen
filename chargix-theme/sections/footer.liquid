@@ -2,7 +2,7 @@
   <div class="footer__glow" aria-hidden="true"></div>
   <div class="container footer__grid">
     <div class="footer__brand">
-      <span class="wordmark wordmark--xl">Chargi<span class="wordmark__x">X</span></span>
+      {% render 'logo', size: 'xl' %}
       <p class="footer__tagline">{{ section.settings.tagline }}</p>
       {%- if section.settings.show_newsletter -%}
         {%- form 'customer', class: 'newsletter', id: 'FooterNewsletter' -%}

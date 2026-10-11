@@ -56,10 +56,32 @@
     h.appendChild(em);
   });
 
+  /* ---------- Section numerals: 01, 02… drifting behind each heading ---------- */
+  $$('main .section__head').forEach((head, i) => {
+    if ($('.sec-index', head)) return;
+    const n = document.createElement('span');
+    n.className = 'sec-index';
+    n.setAttribute('aria-hidden', 'true');
+    n.textContent = String(i + 1).padStart(2, '0');
+    head.prepend(n);
+  });
+
   /* ---------- Horizon sparks: stagger them down the page ---------- */
   $$('main .shopify-section > .section').forEach((s, i) => s.style.setProperty('--spark-delay', (i * 1.7) % 7));
 
   if (reduced) return;
+
+  /* ---------- Smooth, weighted scrolling ---------- */
+  if (window.Lenis && body.dataset.smooth !== 'false' && fine) {
+    const lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.95, smoothWheel: true });
+    window.ChargixLenis = lenis;
+    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+    // Pause while a drawer or dialog has locked the page.
+    new MutationObserver(() => (body.style.overflow === 'hidden' ? lenis.stop() : lenis.start()))
+      .observe(body, { attributes: true, attributeFilter: ['style'] });
+    $$('[data-cart-drawer], .menu-drawer, .search-dialog').forEach((el) => el.setAttribute('data-lenis-prevent', ''));
+  }
 
   /* ---------- Card spotlight: light and border follow the pointer ---------- */
   if (fine) {

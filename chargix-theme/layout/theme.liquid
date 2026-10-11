@@ -70,6 +70,9 @@
     </script>
     <script src="{{ 'motion.js' | asset_url }}" defer></script>
     <script src="{{ 'cart.js' | asset_url }}" defer></script>
+    {%- if settings.smooth_scroll -%}
+      <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
+    {%- endif -%}
     <script src="{{ 'luxe.js' | asset_url }}" defer></script>
     {%- if settings.ambient_circuit -%}
       <script src="{{ 'ambient.js' | asset_url }}" defer></script>
@@ -78,7 +81,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name }}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}">
+  <body class="template-{{ template.name }}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}" data-smooth="{{ settings.smooth_scroll }}">
     {% render 'ambient' %}
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     <div class="charge-bar" aria-hidden="true"><span></span></div>

@@ -1,22 +1,22 @@
 {%- liquid
-  assign hue = 222
+  assign hue = 300
   case collection.handle
     when 'chargers-power'
-      assign hue = 205
+      assign hue = 330
     when 'phone-stands-mounts'
-      assign hue = 265
+      assign hue = 25
     when 'selfie-sticks-tripods'
-      assign hue = 175
+      assign hue = 275
     when 'camera-grips-lighting'
-      assign hue = 320
+      assign hue = 165
     when 'lenses-filters'
-      assign hue = 35
+      assign hue = 300
     when 'cases-screen-protection'
-      assign hue = 150
-    when 'action-camera-accessories'
-      assign hue = 10
-    when 'best-sellers'
       assign hue = 45
+    when 'action-camera-accessories'
+      assign hue = 5
+    when 'best-sellers'
+      assign hue = 85
   endcase
   if collection.metafields.custom.hue != blank
     assign hue = collection.metafields.custom.hue

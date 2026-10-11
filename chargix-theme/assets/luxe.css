@@ -1,6 +1,6 @@
-/* ChargiX Pulse · Luxe layer
-   Concept: a flagship showroom after hours. Champagne hairlines and chrome
-   type over a living circuit field; every click is a surge of current that
+/* ChargiX Prism · Luxe layer
+   Concept: a night-time flagship lit like a phone screen. Holographic
+   dust in the air, prism hairlines, pearl type; every click is a surge of light that
    carries you into the next room. Loaded after base.css and only adds or
    refines; turn pieces off from Theme settings > Shape and motion. */
 
@@ -8,12 +8,13 @@
 @property --sheen { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
 
 :root {
-  --lux: #e6c98f;
-  --lux-rgb: 230, 201, 143;
+  --lux: #a98bff;
+  --lux-rgb: 169, 139, 255;
+  --holo: linear-gradient(100deg, #ff5fb0 0%, #ffb35c 22%, #7af0d0 46%, #a98bff 70%, #ff5fb0 100%);
   --f-serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
-  --chrome: linear-gradient(180deg, #ffffff 0%, #e6ebf5 40%, #aeb9d2 66%, #eef2fa 100%);
-  --hairline: linear-gradient(90deg, transparent, rgba(var(--lux-rgb), 0.55) 30%, rgba(255, 255, 255, 0.7) 50%, rgba(var(--lux-rgb), 0.55) 70%, transparent);
+  --chrome: linear-gradient(180deg, #ffffff 0%, #f4ecff 40%, #c9b8f0 70%, #fff4fb 100%);
+  --hairline: linear-gradient(90deg, transparent, rgba(var(--volt-rgb), 0.6) 25%, rgba(255, 255, 255, 0.7) 45%, rgba(var(--lux-rgb), 0.6) 65%, rgba(122, 240, 208, 0.5) 80%, transparent);
   --glass-lux: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015) 40%, rgba(var(--volt-rgb), 0.04));
 }
 
@@ -27,10 +28,10 @@ main.page, .section-footer, .footer { position: relative; z-index: 1; }
 .ambient__aurora { position: absolute; inset: -20%; }
 .ambient__aurora i {
   position: absolute; width: 62vmax; height: 62vmax; border-radius: 50%;
-  filter: blur(90px); opacity: 0.28; mix-blend-mode: screen; will-change: transform;
+  filter: blur(110px); opacity: 0.16; mix-blend-mode: screen; will-change: transform;
 }
 .ambient__aurora i:nth-child(1) { left: -8%; top: -12%; background: radial-gradient(closest-side, rgba(var(--volt-rgb), 0.9), transparent); animation: aurora-a 34s ease-in-out infinite alternate; }
-.ambient__aurora i:nth-child(2) { right: -14%; top: 18%; background: radial-gradient(closest-side, rgba(124, 92, 255, 0.75), transparent); animation: aurora-b 41s ease-in-out infinite alternate; }
+.ambient__aurora i:nth-child(2) { right: -14%; top: 18%; background: radial-gradient(closest-side, rgba(var(--spark-rgb), 0.6), transparent); animation: aurora-b 41s ease-in-out infinite alternate; }
 .ambient__aurora i:nth-child(3) { left: 22%; bottom: -28%; background: radial-gradient(closest-side, rgba(var(--lux-rgb), 0.55), transparent); opacity: 0.18; animation: aurora-c 47s ease-in-out infinite alternate; }
 @keyframes aurora-a { to { transform: translate3d(18vw, 14vh, 0) scale(1.15); } }
 @keyframes aurora-b { to { transform: translate3d(-22vw, 10vh, 0) scale(0.9); } }
@@ -39,17 +40,8 @@ main.page, .section-footer, .footer { position: relative; z-index: 1; }
 .ambient__circuit {
   position: absolute; inset: 0; width: 100%; height: 100%;
   opacity: 0; transition: opacity 1.6s var(--ease-out);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(0, 0, 0, 0.18), #000 78%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(0, 0, 0, 0.18), #000 78%);
 }
 .ambient__circuit.is-live { opacity: 1; }
-.ambient__grid {
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(200, 214, 255, 0.075) 1px, transparent 1.6px);
-  background-size: 26px 26px;
-  -webkit-mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.35) 60%, #000);
-  mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.35) 60%, #000);
-}
 .ambient__beam {
   position: absolute; left: 50%; top: -30vh; width: 140vw; height: 90vh; transform: translateX(-50%);
   background: conic-gradient(from 180deg at 50% 0%, transparent 168deg, rgba(var(--lux-rgb), 0.07) 178deg, rgba(255, 255, 255, 0.09) 180deg, rgba(var(--lux-rgb), 0.07) 182deg, transparent 192deg);
@@ -73,14 +65,14 @@ main.page, .section-footer, .footer { position: relative; z-index: 1; }
 .lux-em, .h2 em, .h1 em, .story__title em {
   font-family: var(--f-serif); font-style: italic; font-weight: 400; font-stretch: 100%;
   letter-spacing: 0; padding-right: 0.06em;
-  background: linear-gradient(100deg, var(--lux) 0%, #fff4dc 40%, var(--lux) 60%, #b48a4e 100%);
+  background: var(--holo);
   background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
   animation: sheen-text 6s var(--ease-io) infinite;
 }
 @keyframes sheen-text { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
 .hero__title .word:last-child > span {
   font-family: var(--f-serif); font-style: italic; font-weight: 400; font-stretch: 100%; letter-spacing: 0;
-  background: linear-gradient(100deg, var(--lux) 0%, #fff4dc 40%, var(--lux) 60%, #b48a4e 100%);
+  background: var(--holo);
   background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
   padding-right: 0.08em;
 }
@@ -90,7 +82,7 @@ main.page, .section-footer, .footer { position: relative; z-index: 1; }
 .price__now { color: #fff; letter-spacing: 0.01em; }
 .price--sale .price__now { color: var(--lux); }
 
-/* Section horizons: a champagne hairline with a travelling spark. */
+/* Section horizons: a prism hairline with a travelling spark. */
 main .shopify-section + .shopify-section > .section::before,
 main .shopify-section + .shopify-section > section.section::before {
   content: ''; position: absolute; left: 50%; top: 0; width: min(1100px, 86%); height: 1px;
@@ -119,7 +111,7 @@ main .shopify-section + .shopify-section > .section::after {
    ========================================================= */
 .card__link {
   position: relative; isolation: isolate;
-  background: var(--glass-lux), rgba(10, 14, 28, 0.55);
+  background: var(--glass-lux), rgba(22, 12, 36, 0.6);
   -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 30px 60px -40px rgba(0, 0, 0, 0.9);
 }
@@ -138,14 +130,14 @@ main .shopify-section + .shopify-section > .section::after {
 .card:hover .card__link::before { opacity: 1; }
 .card:hover .card__link::after { opacity: 1; }
 .card:hover .card__link { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 40px 80px -40px rgba(var(--volt-rgb), 0.55); }
-.card__media { background: radial-gradient(circle at 50% 30%, #222c4a, #0a0f1d 75%); }
+.card__media { background: radial-gradient(circle at 50% 30%, #2a1846, #0c0618 75%); }
 .card__media::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.16) 48%, transparent 60%);
   transform: translateX(-120%); transition: transform 1.1s var(--ease-out);
 }
 .card:hover .card__media::after { transform: translateX(120%); }
-.card__badge { background: linear-gradient(135deg, #f3dcab, var(--lux) 50%, #b8894c); color: #1b1206; }
+.card__badge { background: linear-gradient(135deg, #ffb35c, #ff3d9a); color: #fff; }
 
 .btn--volt {
   background: linear-gradient(135deg, color-mix(in srgb, var(--volt) 85%, #fff) 0%, var(--volt) 45%, color-mix(in srgb, var(--volt) 70%, #000) 100%);
@@ -157,8 +149,8 @@ main .shopify-section + .shopify-section > .section::after {
 }
 @keyframes btn-sheen { 0% { transform: translateX(-130%); } 22%, 100% { transform: translateX(130%); } }
 .btn--lux {
-  --bg: linear-gradient(135deg, #f6e3b8, var(--lux) 45%, #a77b40);
-  background: var(--bg); color: #1a1206; border-color: transparent;
+  --bg: linear-gradient(135deg, #ff7ac6, var(--volt) 45%, #ff9a3c);
+  background: var(--bg); color: #fff; border-color: transparent;
   box-shadow: 0 12px 40px -14px rgba(var(--lux-rgb), 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .btn--ghost {
@@ -189,13 +181,13 @@ main .shopify-section + .shopify-section > .section::after {
 
 /* Header: smoked glass with a hairline once you scroll. */
 .is-scrolled .header {
-  background: linear-gradient(180deg, rgba(6, 9, 18, 0.82), rgba(6, 9, 18, 0.62));
+  background: linear-gradient(180deg, rgba(11, 6, 20, 0.86), rgba(11, 6, 20, 0.66));
   -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
 }
 .is-scrolled .header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--hairline); opacity: 0.5; }
-.wordmark__x { background: linear-gradient(135deg, #fff4dc, var(--lux) 50%, #b48a4e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.wordmark__x { background: var(--holo); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-.footer { background: linear-gradient(180deg, transparent, rgba(4, 6, 12, 0.85) 30%); }
+.footer { background: linear-gradient(180deg, transparent, rgba(8, 4, 16, 0.88) 30%); }
 .footer::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--hairline); opacity: 0.6; }
 
 /* Collection headers get a circuit-lit stage instead of a flat band. */
@@ -254,7 +246,7 @@ main .shopify-section + .shopify-section > .section::after {
   position: fixed; inset: 0; z-index: 110; pointer-events: none; display: grid; place-items: center;
   background:
     radial-gradient(circle at var(--warp-x, 50%) var(--warp-y, 50%), rgba(var(--lux-rgb), 0.35), transparent 30%),
-    radial-gradient(circle at var(--warp-x, 50%) var(--warp-y, 50%), #0b1430, var(--ink) 70%);
+    radial-gradient(circle at var(--warp-x, 50%) var(--warp-y, 50%), #2a0f3a, var(--ink) 70%);
   clip-path: circle(0px at var(--warp-x, 50%) var(--warp-y, 50%));
   visibility: hidden;
 }
@@ -287,9 +279,9 @@ html.is-arriving:not(.vt) .warp {
    ========================================================= */
 .intro { display: none; }
 .has-intro .intro { display: grid; position: fixed; inset: 0; z-index: 130; place-items: center; pointer-events: auto; cursor: pointer; }
-.intro__half { position: absolute; left: 0; right: 0; height: 50.5%; background: radial-gradient(ellipse at 50% 100%, #0d1735, var(--ink) 70%); }
+.intro__half { position: absolute; left: 0; right: 0; height: 50.5%; background: radial-gradient(ellipse at 50% 100%, #2a0f3a, var(--ink) 70%); }
 .intro__half--top { top: 0; }
-.intro__half--bottom { bottom: 0; background: radial-gradient(ellipse at 50% 0%, #0d1735, var(--ink) 70%); }
+.intro__half--bottom { bottom: 0; background: radial-gradient(ellipse at 50% 0%, #2a0f3a, var(--ink) 70%); }
 .intro__half::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: var(--hairline); opacity: 0; }
 .intro__half--top::after { bottom: 0; }
 .intro__half--bottom::after { top: 0; }
@@ -329,7 +321,7 @@ html.is-arriving:not(.vt) .warp {
     width: 92px; height: 92px; margin: -46px 0 0 -46px; mix-blend-mode: normal;
     background: rgba(var(--lux-rgb), 0.92); border-color: transparent;
   }
-  .cursor-ring__label { font: 600 0.68rem/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: #1a1206; opacity: 0; transition: opacity 0.25s; }
+  .cursor-ring__label { font: 600 0.68rem/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: #fff; opacity: 0; transition: opacity 0.25s; }
   .cursor-ring.is-view .cursor-ring__label { opacity: 1; }
   .cursor-ring.is-down { --rs: 0.8; }
 }
@@ -380,7 +372,7 @@ html.is-arriving:not(.vt) .warp {
 .pnav__link:hover::before { transform: scaleX(1); }
 .pnav__link--next { grid-template-columns: 1fr 64px; text-align: right; padding: 10px 10px 10px 16px; }
 .pnav__link--next .pnav__media { order: 2; }
-.pnav__media { width: 64px; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #0d1324; }
+.pnav__media { width: 64px; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #1c1030; }
 .pnav__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out); }
 .pnav__link:hover .pnav__media img { transform: scale(1.1); }
 .pnav__dir { display: block; font: 600 0.7rem/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lux); margin-bottom: 6px; }
@@ -396,3 +388,91 @@ html.is-arriving:not(.vt) .warp {
   .warp, .warp-ring, .intro, .cursor-ring { display: none !important; }
   .ambient__circuit { display: none; }
 }
+
+/* =========================================================
+   Prism: typography, logo, gradient controls
+   ========================================================= */
+.h1, .h2, .hero__title, .plp__title, .pdp__title, .deck__title, .story__title {
+  font-weight: 500; font-stretch: 108%; letter-spacing: -0.035em; line-height: 1.02;
+}
+.hero__title { font-weight: 450; letter-spacing: -0.045em; max-width: 12ch; }
+.plp__title { font-weight: 450; }
+.eyebrow { font: 600 0.72rem/1 var(--f-body); letter-spacing: 0.32em; }
+.eyebrow .icon { display: none; }
+.hero__title .word:last-child > span { font-size: 1.08em; }
+
+.logo { display: inline-flex; align-items: center; gap: 12px; color: var(--fg); }
+.logo__mark { width: 34px; height: 34px; flex: none; filter: drop-shadow(0 0 12px rgba(var(--volt-rgb), 0.35)); transition: transform 0.9s var(--ease-out); }
+.header__logo:hover .logo__mark { transform: rotate(180deg); }
+.logo__word { font: 500 1rem/1 var(--f-display); font-stretch: 125%; letter-spacing: 0.34em; margin-right: -0.34em; white-space: nowrap; }
+.logo__x { background: var(--holo); background-size: 200% 100%; animation: sheen-text 6s var(--ease-io) infinite; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.logo--lg .logo__mark { width: 52px; height: 52px; }
+.logo--lg .logo__word { font-size: 1.4rem; }
+.logo--xl { gap: 20px; }
+.logo--xl .logo__mark { width: clamp(56px, 7vw, 92px); height: auto; aspect-ratio: 1; }
+.logo--xl .logo__word { font-size: clamp(1.8rem, 5vw, 3.6rem); }
+.logo--hero { flex-direction: column; gap: 22px; }
+.logo--hero .logo__mark { width: clamp(72px, 10vw, 110px); height: auto; aspect-ratio: 1; animation: mark-in 1.2s var(--ease-out) both; }
+.logo--hero .logo__word { font-size: clamp(1.6rem, 4.6vw, 2.8rem); }
+@keyframes mark-in { from { transform: rotate(-120deg) scale(0.6); opacity: 0; } }
+.intro__mark { animation: intro-mark 1.1s var(--ease-out) both; }
+@media (max-width: 560px) { .logo__word { font-size: 0.86rem; letter-spacing: 0.26em; margin-right: -0.26em; } .logo__mark { width: 28px; height: 28px; } }
+
+.btn--volt {
+  color: #fff; border-color: transparent;
+  background: linear-gradient(120deg, #ff9a3c 0%, var(--volt) 45%, #a14dff 100%);
+  background-size: 160% 100%; transition: background-position 0.6s var(--ease-out), box-shadow 0.4s, transform 0.4s;
+  box-shadow: 0 14px 44px -16px rgba(var(--volt-rgb), 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+.btn--volt .icon { color: #fff; }
+.btn--volt:hover { background-position: 100% 0; }
+.btn--volt::before { display: none; }
+.btn--volt:hover { box-shadow: 0 18px 60px -14px rgba(var(--volt-rgb), 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.65); }
+.header__count { background: var(--volt); color: #fff; }
+.pdp__add.is-charged { background: linear-gradient(135deg, #7af0d0, var(--lux)); }
+
+/* Product media: a colored studio light instead of a flat disc. */
+.card__media, .pdp__stage { background: radial-gradient(circle at 30% 20%, rgba(var(--volt-rgb), 0.28), transparent 55%), radial-gradient(circle at 80% 85%, rgba(var(--lux-rgb), 0.3), transparent 55%), radial-gradient(circle at 50% 40%, #2a1846 0%, #140a24 60%, #0c0618 100%) !important; }
+.card__img { mix-blend-mode: normal; }
+
+/* =========================================================
+   Moving between sections: depth, tilt and parallax on scroll
+   ========================================================= */
+.sec-index {
+  position: absolute; right: 0; top: -0.35em; z-index: -1; pointer-events: none;
+  font: 300 clamp(5rem, 14vw, 12rem)/1 var(--f-display); font-stretch: 125%; letter-spacing: -0.04em;
+  color: transparent; -webkit-text-stroke: 1px rgba(var(--lux-rgb), 0.28);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    main .shopify-section:not(:first-child) > .section:not(.story):not(.section--tight) {
+      animation: sec-enter linear both; animation-timeline: view(); animation-range: entry 0% cover 32%;
+      transform-origin: 50% 0%;
+    }
+    @keyframes sec-enter {
+      from { opacity: 0; transform: perspective(1600px) translateY(110px) rotateX(9deg) scale(0.94); filter: blur(8px) brightness(0.6); }
+      to { opacity: 1; transform: none; filter: none; }
+    }
+    .hero__content {
+      animation: hero-leave linear both; animation-timeline: view(); animation-range: exit 0% exit 90%;
+    }
+    @keyframes hero-leave { to { opacity: 0; transform: translateY(-90px) scale(0.95); filter: blur(10px); } }
+    .sec-index { animation: index-drift linear both; animation-timeline: view(); animation-range: cover; }
+    @keyframes index-drift { from { transform: translateY(60%); } to { transform: translateY(-60%); } }
+    .card { animation: card-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
+    @keyframes card-rise { from { opacity: 0; transform: translateY(70px) rotateX(14deg) scale(0.92); } }
+    .spotlight__media { animation: spot-zoom linear both; animation-timeline: view(); animation-range: entry 0% cover 50%; }
+    @keyframes spot-zoom { from { transform: scale(0.82) rotate(-4deg); opacity: 0.2; } }
+    .footer { animation: footer-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+    @keyframes footer-rise { from { opacity: 0.2; transform: translateY(60px); } }
+  }
+}
+/* When the scroll timeline drives the cards, the old reveal stays out of the way. */
+@supports (animation-timeline: view()) { .card.reveal.is-armed { opacity: 1; transform: none; } }
+
+/* Smooth scrolling (Lenis) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.section__head { isolation: isolate; }

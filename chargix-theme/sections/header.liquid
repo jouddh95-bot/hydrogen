@@ -8,7 +8,7 @@
       {%- if section.settings.logo != blank -%}
         {{ section.settings.logo | image_url: width: 360 | image_tag: class: 'header__logo-img', alt: shop.name }}
       {%- else -%}
-        <span class="wordmark">Chargi<span class="wordmark__x">X</span></span>
+        {% render 'logo' %}
       {%- endif -%}
     </a>
 

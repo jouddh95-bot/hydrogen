@@ -4,7 +4,7 @@
     <h1 class="h1 reveal" style="--i:1">{{ section.settings.heading }}</h1>
   </div>
   <div class="container cats__grid">
-    {%- assign hues = '205,265,175,320,35,150,10,45,222,290' | split: ',' -%}
+    {%- assign hues = '330,25,275,165,300,45,5,85,350,190' | split: ',' -%}
     {%- for c in collections -%}
       {%- if c.handle == 'frontpage' or c.handle == 'products' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
       {%- assign img = c.image | default: c.products.first.featured_media -%}

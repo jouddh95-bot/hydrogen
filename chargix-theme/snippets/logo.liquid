@@ -1,0 +1,23 @@
+{%- comment -%}
+  ChargiX monogram + wordmark. A holographic ring holding an X whose second stroke is
+  a bolt of current. Usage: render 'logo', size: 'xl', mark_only: false
+{%- endcomment -%}
+<span class="logo{% if size %} logo--{{ size }}{% endif %}">
+  <svg class="logo__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="cxHolo-{{ size | default: 'base' }}" x1="6" y1="4" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#ff9a3c"/>
+        <stop offset=".35" stop-color="#ff3d9a"/>
+        <stop offset=".68" stop-color="#a98bff"/>
+        <stop offset="1" stop-color="#7af0d0"/>
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="22.6" fill="none" stroke="url(#cxHolo-{{ size | default: 'base' }})" stroke-width="1.2"/>
+    <circle cx="24" cy="24" r="19.2" fill="none" stroke="url(#cxHolo-{{ size | default: 'base' }})" stroke-width=".5" opacity=".55"/>
+    <path d="M15 13.5 33 34.5" fill="none" stroke="url(#cxHolo-{{ size | default: 'base' }})" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M33.5 12.5 22.8 24.6h6.1L14.5 35.5" fill="none" stroke="url(#cxHolo-{{ size | default: 'base' }})" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  {%- unless mark_only -%}
+    <span class="logo__word">CHARGI<span class="logo__x">X</span></span>
+  {%- endunless -%}
+</span>

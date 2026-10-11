@@ -1,5 +1,5 @@
-// ChargiX hero: a breathing energy core that "charges" as the visitor scrolls.
-// Particles stream into the core, coils spin up, and featured products orbit it.
+// ChargiX hero: a holographic chrome sculpture that "charges" as the visitor scrolls.
+// Colored sparks stream into it, fine rings spin up, and featured products orbit it.
 import * as THREE from 'three';
 
 const hero = document.querySelector('[data-hero]');
@@ -18,8 +18,8 @@ function init() {
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const small = window.matchMedia('(max-width: 749px)').matches;
-  const volt = new THREE.Color(canvas.dataset.volt || '#3d7cff');
-  const spark = new THREE.Color(canvas.dataset.spark || '#ffb547');
+  const volt = new THREE.Color(canvas.dataset.volt || '#ff3d9a');
+  const spark = new THREE.Color(canvas.dataset.spark || '#ff9a3c');
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.5 : 2));
   const scene = new THREE.Scene();
@@ -68,14 +68,30 @@ function init() {
       uniform float uTime; uniform float uCharge; uniform float uPulse;
       varying vec3 vNormal; varying vec3 vView; varying float vNoise; varying vec3 vPos;
       ${noise}
+      float field(vec3 n){
+        float speed = 0.22 + uCharge * 0.5;
+        return snoise(n * 1.3 + vec3(uTime * speed)) + 0.45 * snoise(n * 2.9 - vec3(uTime * speed * 0.8));
+      }
+      vec3 displace(vec3 q, out float n){
+        vec3 d = normalize(q);
+        n = field(d);
+        float amp = 0.06 + uCharge * 0.05 + uPulse * 0.25;
+        return d * (1.0 + n * amp);
+      }
       void main(){
-        float speed = 0.35 + uCharge * 0.9;
-        float n = snoise(normal * 1.6 + vec3(uTime * speed));
-        float amp = 0.06 + uCharge * 0.08 + uPulse * 0.3;
-        vec3 p = position + normal * n * amp;
+        float n; float n1; float n2;
+        vec3 p = displace(position, n);
+        // Rebuild the normal of the moving surface from two nearby samples.
+        vec3 nrm = normalize(position);
+        vec3 tang = normalize(cross(nrm, abs(nrm.y) > 0.9 ? vec3(1.0, 0.0, 0.0) : vec3(0.0, 1.0, 0.0)));
+        vec3 bit = cross(nrm, tang);
+        vec3 pt = displace(position + tang * 0.02, n1);
+        vec3 pb = displace(position + bit * 0.02, n2);
+        vec3 N = normalize(cross(pt - p, pb - p));
+        if (dot(N, p) < 0.0) N = -N;
         vNoise = n; vPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        vNormal = normalize(normalMatrix * normal);
+        vNormal = normalize(normalMatrix * N);
         vView = normalize(-mv.xyz);
         gl_Position = projectionMatrix * mv;
       }`,
@@ -83,16 +99,35 @@ function init() {
       uniform float uTime; uniform float uCharge; uniform float uPulse;
       uniform vec3 uVolt; uniform vec3 uSpark;
       varying vec3 vNormal; varying vec3 vView; varying float vNoise; varying vec3 vPos;
+      // Holographic chrome: a dark studio reflected in a thin-film surface
+      // whose color slides through pink, tangerine, mint and violet with the
+      // viewing angle, like the back of a new phone.
+      vec3 studio(vec3 r){
+        float top = smoothstep(0.45, 0.95, r.y);
+        float strip = pow(max(0.0, 1.0 - abs(r.y - 0.08) * 5.0), 4.0) * smoothstep(-0.1, 0.7, r.x);
+        float rim = pow(max(0.0, 1.0 - abs(r.x + 0.75) * 3.0), 3.0) * smoothstep(-0.6, 0.4, r.y);
+        float floorB = smoothstep(-0.15, -0.95, r.y);
+        return vec3(1.0) * top * 1.2 + vec3(1.0) * strip * 1.0 + uSpark * rim * 0.7 + uVolt * floorB * 0.45;
+      }
+      vec3 film(float t){
+        // cosine palette tuned to hot pink -> tangerine -> mint -> violet
+        return 0.55 + 0.45 * cos(6.28318 * (vec3(1.0) * t + vec3(0.0, 0.33, 0.67)));
+      }
       void main(){
-        float fres = pow(1.0 - max(dot(vNormal, vView), 0.0), 2.2);
-        vec3 hue = mix(uVolt, uSpark, smoothstep(0.55, 1.0, uCharge));
-        // charging bands sweep upward through the core
-        float band = smoothstep(0.92, 1.0, sin(vPos.y * 9.0 - uTime * (2.0 + uCharge * 6.0)) * 0.5 + 0.5);
-        float fill = smoothstep(-1.3, 1.3, vPos.y) < uCharge ? 1.0 : 0.25;
-        vec3 base = vec3(0.02, 0.03, 0.07);
-        vec3 col = base + hue * (fres * 1.25 + band * 0.35 * fill + max(vNoise, 0.0) * 0.06 * fill);
-        col += hue * uPulse * 0.8;
-        gl_FragColor = vec4(col, 0.96);
+        vec3 N = normalize(vNormal); vec3 V = normalize(vView);
+        vec3 R = reflect(-V, N);
+        float ndv = max(dot(N, V), 0.0);
+        float fres = pow(1.0 - ndv, 2.5);
+        vec3 env = studio(R);
+        vec3 irid = film(ndv * 0.8 + vNoise * 0.12 + R.y * 0.2 + uTime * 0.04);
+        irid = mix(irid, uVolt, 0.25 * (1.0 - fres));
+        vec3 col = irid * (0.08 + env * 0.85) + env * 0.22 + irid * fres * 0.9;
+        // a slow ring of light climbs the surface as it charges
+        float band = smoothstep(0.985, 1.0, sin(vPos.y * 5.0 - uTime * (0.9 + uCharge * 2.5)) * 0.5 + 0.5);
+        col += vec3(1.0) * band * (0.15 + uCharge * 0.35);
+        col += uVolt * uPulse * 0.5;
+        col = col / (1.0 + col * 0.35); // soft filmic shoulder
+        gl_FragColor = vec4(col, 1.0);
       }`,
   });
   const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.0, small ? 32 : 64), coreMat);
@@ -110,8 +145,8 @@ function init() {
       void main(){
         float d = distance(vUv, vec2(0.5));
         float g = smoothstep(0.5, 0.0, d);
-        vec3 hue = mix(uVolt, uSpark, smoothstep(0.55, 1.0, uCharge));
-        vec3 c = hue * g * g * g * (0.28 + uCharge * 0.3 + uPulse * 0.8);
+        vec3 hue = mix(uVolt, vec3(0.66, 0.55, 1.0), 0.5 + 0.5 * smoothstep(0.55, 1.0, uCharge));
+        vec3 c = hue * g * g * g * (0.16 + uCharge * 0.16 + uPulse * 0.5);
         // Alpha follows brightness so the halo glows over the page instead of
         // painting an opaque black panel behind it.
         float a = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
@@ -125,12 +160,12 @@ function init() {
   // ---- Coils ------------------------------------------------------------
   const coils = [];
   const coilSpecs = [
-    { r: 1.75, tube: 0.008, tilt: [1.2, 0.2, 0] },
-    { r: 2.05, tube: 0.006, tilt: [0.4, 1.1, 0.3] },
-    { r: 2.4, tube: 0.005, tilt: [1.6, -0.6, 0.8] },
+    { r: 1.6, tube: 0.006, tilt: [1.35, 0.15, 0] },
+    { r: 1.95, tube: 0.004, tilt: [0.5, 1.05, 0.3] },
+    { r: 2.35, tube: 0.003, tilt: [1.65, -0.55, 0.8] },
   ];
   coilSpecs.forEach((s, i) => {
-    const m = new THREE.MeshBasicMaterial({ color: i === 1 ? spark : volt, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending });
+    const m = new THREE.MeshBasicMaterial({ color: [volt, spark, new THREE.Color('#a98bff')][i], transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
     const c = new THREE.Mesh(new THREE.TorusGeometry(s.r, s.tube, 8, 220), m);
     c.rotation.set(...s.tilt);
     c.userData.speed = 0.12 + i * 0.07;
@@ -157,8 +192,9 @@ function init() {
     blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */ `
       uniform float uTime; uniform float uCharge; uniform float uSize;
-      attribute vec4 aSeed; varying float vLife;
+      attribute vec4 aSeed; varying float vLife; varying float vTone;
       void main(){
+        vTone = fract(aSeed.x * 0.159 + aSeed.w);
         float speed = aSeed.w * (0.08 + uCharge * 0.32);
         float life = fract(aSeed.y - uTime * speed);
         float r = 1.25 + life * 4.2;
@@ -170,12 +206,13 @@ function init() {
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uCharge; uniform vec3 uVolt; uniform vec3 uSpark; varying float vLife;
+      uniform float uCharge; uniform vec3 uVolt; uniform vec3 uSpark; varying float vLife; varying float vTone;
       void main(){
         float d = length(gl_PointCoord - 0.5);
         if (d > 0.5) discard;
         float a = smoothstep(0.5, 0.0, d) * smoothstep(1.0, 0.6, vLife) * smoothstep(0.0, 0.08, vLife);
-        vec3 hue = mix(uVolt, uSpark, smoothstep(0.4, 0.0, vLife) * uCharge);
+        vec3 tone = vTone < 0.4 ? uVolt : vTone < 0.65 ? uSpark : vTone < 0.85 ? vec3(0.66, 0.55, 1.0) : vec3(0.48, 0.94, 0.82);
+        vec3 hue = mix(tone, vec3(1.0), smoothstep(0.3, 0.0, vLife) * uCharge * 0.6);
         gl_FragColor = vec4(hue, a);
       }`,
   });

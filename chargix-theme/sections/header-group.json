@@ -5,14 +5,49 @@
     "announcement": {
       "type": "announcement",
       "blocks": {
-        "m1": { "type": "message", "settings": { "text": "Free shipping across the US" } },
-        "m2": { "type": "message", "settings": { "text": "30-day returns" } },
-        "m3": { "type": "message", "settings": { "text": "Secure checkout" } },
-        "m4": { "type": "message", "settings": { "text": "New: Telesin Portrait Lens Kit", "link": "shopify://collections/lenses-filters" } }
+        "m1": {
+          "type": "message",
+          "settings": {
+            "text": "Free express shipping across the US"
+          }
+        },
+        "m2": {
+          "type": "message",
+          "settings": {
+            "text": "30-day returns, no questions"
+          }
+        },
+        "m3": {
+          "type": "message",
+          "settings": {
+            "text": "Curated viral tech"
+          }
+        },
+        "m4": {
+          "type": "message",
+          "settings": {
+            "text": "Just landed: Telesin Portrait Lens Kit",
+            "link": "shopify://collections/lenses-filters"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3", "m4"]
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ]
     },
-    "header": { "type": "header", "settings": { "menu": "main-menu", "logo_width": 140 } }
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "logo_width": 140
+      }
+    }
   },
-  "order": ["announcement", "header"]
+  "order": [
+    "announcement",
+    "header"
+  ]
 }
