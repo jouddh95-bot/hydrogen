@@ -1,0 +1,22 @@
+<section class="section">
+  <div class="container container--narrow">
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="notice notice--ok" role="status">{{ 'contact.success' | t }}</p>
+      {%- elsif form.errors -%}
+        <div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field-row">
+        <div class="field"><label for="ContactName">{{ 'contact.name' | t }}</label><input id="ContactName" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
+        <div class="field"><label for="ContactEmail">{{ 'contact.email' | t }} *</label><input id="ContactEmail" type="email" name="contact[email]" required autocomplete="email" value="{{ form.email }}"></div>
+      </div>
+      <div class="field"><label for="ContactOrder">{{ 'contact.order' | t }}</label><input id="ContactOrder" name="contact[order]" value="{{ form.order }}"></div>
+      <div class="field"><label for="ContactBody">{{ 'contact.message' | t }}</label><textarea id="ContactBody" name="contact[body]" rows="6">{{ form.body }}</textarea></div>
+      <button type="submit" class="btn btn--volt btn--lg" data-magnetic>{{ 'contact.send' | t }} {% render 'icon', icon: 'arrow' %}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Contact form", "class": "section-contact", "presets": [{ "name": "Contact form" }] }
+{% endschema %}

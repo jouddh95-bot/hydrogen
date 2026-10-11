@@ -1,0 +1,15 @@
+{
+  "current": {
+    "color_ink": "#060912",
+    "color_surface": "#0d1324",
+    "color_text": "#e9edf7",
+    "color_muted": "#8b95ad",
+    "color_volt": "#3d7cff",
+    "color_spark": "#ffb547",
+    "radius": 18,
+    "page_transitions": true,
+    "cursor_glow": true,
+    "free_ship_threshold": 0
+  },
+  "presets": {}
+}

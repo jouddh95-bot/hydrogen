@@ -1,0 +1,26 @@
+<section class="section">
+  <div class="container">
+    <h1 class="h1 reveal">{{ 'general.search' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label for="SearchPage" class="visually-hidden">{{ 'general.search' | t }}</label>
+      <input id="SearchPage" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search_placeholder' | t }}">
+      <input type="hidden" name="type" value="product">
+      <button class="btn btn--volt" type="submit">{% render 'icon', icon: 'search' %}<span class="visually-hidden">{{ 'general.search' | t }}</span></button>
+    </form>
+    {%- if search.performed -%}
+      <p class="muted">{{ 'general.results_count' | t: count: search.results_count, terms: search.terms }}</p>
+      {%- paginate search.results by 24 -%}
+        <div class="product-grid">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}{% render 'product-card', product: item, index: forloop.index0 %}{%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}<nav class="pager">{{ paginate | default_pagination }}</nav>{%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Search", "class": "section-main-search" }
+{% endschema %}

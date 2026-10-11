@@ -1,0 +1,45 @@
+{%- comment -%}
+  Product card with pointer-driven 3D tilt. The image becomes the shared
+  element of the page transition when the card is clicked (see motion.js).
+  Usage: render 'product-card', product: product, index: forloop.index0, eager: false
+{%- endcomment -%}
+{%- liquid
+  assign img = product.featured_media
+  assign second = product.media[1]
+  assign variant = product.selected_or_first_available_variant
+  assign loading = 'lazy'
+  if eager
+    assign loading = 'eager'
+  endif
+-%}
+<article class="card reveal" style="--i: {{ index | default: 0 }}" data-tilt>
+  <a class="card__link" href="{{ product.url }}" data-product-link aria-label="{{ product.title | escape }}">
+    <div class="card__media" data-shared-media>
+      {%- if img -%}
+        {{ img | image_url: width: 900 | image_tag: loading: loading, widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 25vw, (min-width: 600px) 45vw, 80vw', class: 'card__img', alt: product.title }}
+        {%- if second and second.media_type == 'image' -%}
+          {{ second | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 25vw, 45vw', class: 'card__img card__img--alt', alt: '' }}
+        {%- endif -%}
+      {%- else -%}
+        <div class="card__placeholder">{% render 'icon', icon: 'bolt' %}</div>
+      {%- endif -%}
+      <span class="card__glare" aria-hidden="true"></span>
+      {%- if variant.compare_at_price > variant.price -%}
+        {%- assign saved = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | floor -%}
+        <span class="card__badge">-{{ saved }}%</span>
+      {%- endif -%}
+    </div>
+    <div class="card__body">
+      <h3 class="card__title">{{ product.title | escape }}</h3>
+      {% render 'price', product: product %}
+    </div>
+  </a>
+  {%- if product.variants.size == 1 and variant.available -%}
+    <form class="card__quick" action="{{ routes.cart_add_url }}" method="post" data-add-form>
+      <input type="hidden" name="id" value="{{ variant.id }}">
+      <button type="submit" class="card__add" aria-label="{{ 'products.add_to_cart' | t }}: {{ product.title | escape }}">
+        {% render 'icon', icon: 'plus' %}
+      </button>
+    </form>
+  {%- endif -%}
+</article>

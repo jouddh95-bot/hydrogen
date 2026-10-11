@@ -1,0 +1,12 @@
+<section class="section nf">
+  <div class="container nf__inner">
+    <p class="nf__code mono" aria-hidden="true">4<span>0</span>4</p>
+    <h1 class="h1">{{ 'general.404_title' | t }}</h1>
+    <p class="muted">{{ 'general.404_text' | t }}</p>
+    <a class="btn btn--volt btn--lg" href="{{ routes.all_products_collection_url }}" data-magnetic>{{ 'cart.continue' | t }} {% render 'icon', icon: 'arrow' %}</a>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "404", "class": "section-404" }
+{% endschema %}

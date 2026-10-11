@@ -1,0 +1,27 @@
+{
+  "general": {
+    "home": "Inicio", "menu": "Menú", "main_menu": "Menú principal", "close": "Cerrar", "search": "Buscar",
+    "search_placeholder": "Busca cargadores, soportes, lentes…", "results_count": "{{ count }} resultados para “{{ terms }}”",
+    "previous": "Anterior", "next": "Siguiente", "scroll": "Desliza para explorar", "breadcrumbs": "Ruta", "pagination": "Paginación",
+    "announcements": "Anuncios", "payment_methods": "Métodos de pago",
+    "404_title": "Esta página se quedó sin batería", "404_text": "El enlace puede estar viejo o mal escrito."
+  },
+  "accessibility": { "skip_to_content": "Saltar al contenido" },
+  "products": {
+    "add_to_cart": "Agregar al carrito", "added": "Agregado al carrito", "adding": "Agregando…", "sold_out": "Agotado", "unavailable": "No disponible",
+    "view": "Ver detalles", "quantity": "Cantidad", "increase": "Aumentar", "decrease": "Disminuir", "gallery": "Imágenes", "view_image": "Ver imagen {{ number }}",
+    "perk_shipping": "Envío gratis en EE. UU.", "perk_returns": "Devoluciones en 30 días", "perk_secure": "Pago seguro"
+  },
+  "collections": {
+    "items": "productos", "shop": "Comprar", "view_all": "Ver todo", "all_categories": "Todas las categorías", "empty": "Aún no hay productos.",
+    "sort_by": "Ordenar por", "from": "Desde", "to": "Hasta", "apply": "Aplicar", "clear": "Limpiar"
+  },
+  "cart": {
+    "title": "Tu carrito", "subtotal": "Subtotal", "taxes_note": "Impuestos y descuentos se calculan al pagar.", "checkout": "Pagar",
+    "update": "Actualizar", "remove": "Quitar", "empty": "Tu carrito está vacío.", "continue": "Seguir comprando",
+    "free_shipping_unlocked": "Envío gratis desbloqueado", "free_shipping_away": "Te faltan {{ amount }} para envío gratis"
+  },
+  "newsletter": { "label": "Correo", "placeholder": "tu@correo.com", "button": "Unirme", "success": "Listo. Revisa tu correo." },
+  "contact": { "name": "Nombre", "email": "Correo", "order": "Número de pedido (opcional)", "message": "Mensaje", "send": "Enviar", "success": "Gracias. Responderemos en un día hábil." },
+  "gift_card": { "title": "Tarjeta de regalo", "expired": "Esta tarjeta ya no está activa." }
+}

@@ -1,0 +1,79 @@
+<header class="header" data-header>
+  <div class="header__inner">
+    <button class="header__icon header__menu-btn" type="button" aria-controls="MenuDrawer" aria-expanded="false" data-menu-open>
+      {% render 'icon', icon: 'menu' %}<span class="visually-hidden">{{ 'general.menu' | t }}</span>
+    </button>
+
+    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}" style="--logo-w: {{ section.settings.logo_width }}px">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 360 | image_tag: class: 'header__logo-img', alt: shop.name }}
+      {%- else -%}
+        <span class="wordmark">Chargi<span class="wordmark__x">X</span></span>
+      {%- endif -%}
+    </a>
+
+    <nav class="header__nav" aria-label="{{ 'general.main_menu' | t }}">
+      <ul class="nav">
+        {%- for link in section.settings.menu.links -%}
+          <li class="nav__item{% if link.links != blank %} nav__item--has-children{% endif %}">
+            <a class="nav__link{% if link.child_active or link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+            {%- if link.links != blank -%}
+              <div class="mega">
+                <ul class="mega__list">
+                  {%- for child in link.links -%}
+                    <li><a class="mega__link" href="{{ child.url }}">{{ child.title | escape }}{% render 'icon', icon: 'arrow' %}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__icon" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}" data-search-open>{% render 'icon', icon: 'search' %}</a>
+      <a class="header__icon header__cart" href="{{ routes.cart_url }}" data-cart-open aria-label="{{ 'cart.title' | t }}">
+        {% render 'icon', icon: 'cart' %}
+        <span class="header__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="menu-drawer" id="MenuDrawer" hidden data-menu-drawer>
+  <div class="menu-drawer__panel">
+    <button class="header__icon menu-drawer__close" type="button" data-menu-close>{% render 'icon', icon: 'close' %}<span class="visually-hidden">{{ 'general.close' | t }}</span></button>
+    <ul class="menu-drawer__list">
+      {%- for link in section.settings.menu.links -%}
+        <li style="--i: {{ forloop.index0 }}"><a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- if link.links != blank -%}
+            <ul>{% for child in link.links %}<li><a href="{{ child.url }}">{{ child.title | escape }}</a></li>{% endfor %}</ul>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+<dialog class="search-dialog" data-search-dialog aria-label="{{ 'general.search' | t }}">
+  <form action="{{ routes.search_url }}" method="get" role="search" class="search-dialog__form">
+    {% render 'icon', icon: 'search' %}
+    <label for="SearchInput" class="visually-hidden">{{ 'general.search' | t }}</label>
+    <input id="SearchInput" type="search" name="q" placeholder="{{ 'general.search_placeholder' | t }}" autocomplete="off">
+    <input type="hidden" name="type" value="product">
+    <button type="button" class="header__icon" data-search-close>{% render 'icon', icon: 'close' %}<span class="visually-hidden">{{ 'general.close' | t }}</span></button>
+  </form>
+</dialog>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (optional, a typographic wordmark shows otherwise)" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 260, "step": 10, "unit": "px", "default": 140 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

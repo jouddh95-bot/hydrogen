@@ -1,0 +1,4 @@
+{
+  "sections": { "main": { "type": "main-collection", "settings": { "per_page": 24, "show_filters": true, "show_category_chips": true } } },
+  "order": ["main"]
+}

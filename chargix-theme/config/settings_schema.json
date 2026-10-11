@@ -1,0 +1,41 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "ChargiX Pulse",
+    "theme_version": "1.0.0",
+    "theme_author": "ChargiX",
+    "theme_documentation_url": "https://chargix.store",
+    "theme_support_url": "https://chargix.store/pages/contact"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_ink", "label": "Background", "default": "#060912" },
+      { "type": "color", "id": "color_surface", "label": "Surface", "default": "#0d1324" },
+      { "type": "color", "id": "color_text", "label": "Text", "default": "#e9edf7" },
+      { "type": "color", "id": "color_muted", "label": "Muted text", "default": "#8b95ad" },
+      { "type": "color", "id": "color_volt", "label": "Volt (primary accent)", "default": "#3d7cff" },
+      { "type": "color", "id": "color_spark", "label": "Spark (charge accent)", "default": "#ffb547" }
+    ]
+  },
+  {
+    "name": "Shape and motion",
+    "settings": [
+      { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 18 },
+      { "type": "checkbox", "id": "page_transitions", "label": "Animated page transitions", "default": true },
+      { "type": "checkbox", "id": "cursor_glow", "label": "Cursor glow on desktop", "default": true }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "number", "id": "free_ship_threshold", "label": "Free shipping threshold (0 = always free)", "default": 0 }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  }
+]

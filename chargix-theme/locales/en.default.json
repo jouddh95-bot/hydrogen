@@ -1,0 +1,76 @@
+{
+  "general": {
+    "home": "Home",
+    "menu": "Menu",
+    "main_menu": "Main menu",
+    "close": "Close",
+    "search": "Search",
+    "search_placeholder": "Search chargers, mounts, lenses…",
+    "results_count": "{{ count }} results for “{{ terms }}”",
+    "previous": "Previous",
+    "next": "Next",
+    "scroll": "Scroll to explore",
+    "breadcrumbs": "Breadcrumbs",
+    "pagination": "Pagination",
+    "announcements": "Announcements",
+    "payment_methods": "Payment methods",
+    "404_title": "This page ran out of battery",
+    "404_text": "The link may be old or mistyped. Everything else is fully charged."
+  },
+  "accessibility": { "skip_to_content": "Skip to content" },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "added": "Charged into your cart",
+    "adding": "Adding…",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "view": "See the details",
+    "quantity": "Quantity",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity",
+    "gallery": "Product images",
+    "view_image": "Show image {{ number }}",
+    "perk_shipping": "Free shipping across the US",
+    "perk_returns": "30-day returns",
+    "perk_secure": "Secure checkout"
+  },
+  "collections": {
+    "items": "items",
+    "shop": "Shop",
+    "view_all": "View all",
+    "all_categories": "All categories",
+    "empty": "No products here yet.",
+    "sort_by": "Sort by",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "clear": "Clear"
+  },
+  "cart": {
+    "title": "Your cart",
+    "subtotal": "Subtotal",
+    "taxes_note": "Taxes and discounts are calculated at checkout.",
+    "checkout": "Check out",
+    "update": "Update cart",
+    "remove": "Remove",
+    "empty": "Your cart is empty. Let's charge it up.",
+    "continue": "Continue shopping",
+    "free_shipping_unlocked": "Free shipping unlocked",
+    "free_shipping_away": "{{ amount }} away from free shipping"
+  },
+  "newsletter": {
+    "label": "Email",
+    "placeholder": "you@email.com",
+    "button": "Join",
+    "success": "You're in. Watch your inbox for drops and deals."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "order": "Order number (optional)",
+    "message": "Message",
+    "send": "Send message",
+    "success": "Thanks. We'll reply within one business day."
+  },
+  "gift_card": { "title": "Gift card", "expired": "This gift card is no longer active." }
+}
