@@ -60,7 +60,7 @@ body.is-haunted { background: var(--night); color: var(--bone); }
 .is-haunted .link-arrow { background: var(--lime); color: var(--ink-0); border-color: var(--ink-0); }
 
 /* Flicker: haunt.js picks a random visible letter now and then. */
-[data-bounce] .ch.is-flicker { animation: flicker 0.9s steps(1) both !important; }
+[data-bounce] .ch.is-flicker { animation: flicker 0.9s steps(1) both !important; transform: none !important; opacity: 1; }
 @keyframes flicker {
   0% { opacity: 1; } 8% { opacity: 0.35; } 14% { opacity: 1; } 22% { opacity: 0.25; color: var(--pink); }
   30% { opacity: 1; } 46% { opacity: 0.4; } 52% { opacity: 1; text-shadow: 0 0 18px var(--pink); } 100% { opacity: 1; }
@@ -265,3 +265,10 @@ body.is-haunted { background: var(--night); color: var(--bone); }
 .is-haunted .tcard { color: #fff; }
 .haunt__title, .haunt__sub { text-shadow: 0 2px 18px rgba(10, 6, 18, 0.65); }
 .haunt__title { text-shadow: 4px 4px 0 var(--shade), 0 4px 30px rgba(10, 6, 18, 0.6); }
+
+/* ---------- Scroll fixes ---------- */
+/* Sideways product rows: no vertical play inside the row, and cards don't rise from below while you swipe. */
+.rail__track { overflow-y: hidden; }
+.rail__track .card.reveal.is-armed, .reel-sec__track .reveal.is-armed, .deck__scroller .reveal.is-armed { opacity: 1; transform: none; }
+/* Collection filter/sort bar scrolls away with the page instead of following you. */
+.plp__bar { position: relative; top: auto; }
