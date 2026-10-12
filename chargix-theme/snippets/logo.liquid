@@ -1,0 +1,28 @@
+{%- comment -%}
+  ChargiX app-icon logo: a glossy squircle in pink-to-tangerine with a white
+  stroke and a dark bolt crossing into an X, beside a chunky lowercase wordmark.
+  Usage: render 'logo', size: 'xl', mark_only: false
+{%- endcomment -%}
+{%- assign gid = size | default: 'base' -%}
+<span class="logo{% if size %} logo--{{ size }}{% endif %}">
+  <svg class="logo__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="cxIcon-{{ gid }}" x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#ff2e88"/>
+        <stop offset=".55" stop-color="#ff5a4e"/>
+        <stop offset="1" stop-color="#ff9a1a"/>
+      </linearGradient>
+      <linearGradient id="cxShine-{{ gid }}" x1="0" y1="0" x2="0" y2="48" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff" stop-opacity=".45"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M24 1.5c13.7 0 22.5 4.6 22.5 22.5S37.7 46.5 24 46.5 1.5 41.9 1.5 24 10.3 1.5 24 1.5Z" fill="url(#cxIcon-{{ gid }})"/>
+    <path d="M24 1.5c13.7 0 22.5 4.6 22.5 22.5S37.7 46.5 24 46.5 1.5 41.9 1.5 24 10.3 1.5 24 1.5Z" fill="url(#cxShine-{{ gid }})"/>
+    <path d="M14.5 13.5 33.5 34.5" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+    <path d="M34 12.5 23.3 24.4h7L14 35.5" fill="none" stroke="#120c1f" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  {%- unless mark_only -%}
+    <span class="logo__word">chargi<span class="logo__x">x</span></span>
+  {%- endunless -%}
+</span>

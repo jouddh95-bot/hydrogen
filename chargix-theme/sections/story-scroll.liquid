@@ -1,0 +1,72 @@
+{%- comment -%}
+  Sticky scroll story. The stage on one side swaps scenes as each chapter
+  on the other side reaches the middle of the screen.
+{%- endcomment -%}
+<section class="story section" data-story>
+  <div class="container">
+    <p class="eyebrow reveal">{{ section.settings.eyebrow }}</p>
+    <h2 class="h2 story__heading reveal" style="--i:1">{{ section.settings.heading }}</h2>
+  </div>
+  <div class="container story__grid">
+    <div class="story__stage" aria-hidden="true">
+      <div class="story__frame">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign img = block.settings.image
+            if img == blank and block.settings.product != blank
+              assign img = block.settings.product.featured_media
+            endif
+          -%}
+          <div class="story__scene{% if forloop.first %} is-active{% endif %}" data-story-scene style="--hue: {{ block.settings.hue }}">
+            {%- if img -%}{{ img | image_url: width: 1100 | image_tag: loading: 'lazy', widths: '500, 800, 1100', sizes: '(min-width: 990px) 45vw, 90vw', alt: '' }}{%- endif -%}
+          </div>
+        {%- endfor -%}
+        <div class="story__ring"></div>
+      </div>
+      <ol class="story__dots">
+        {%- for block in section.blocks -%}<li class="{% if forloop.first %}is-active{% endif %}" data-story-dot></li>{%- endfor -%}
+      </ol>
+    </div>
+    <div class="story__chapters">
+      {%- for block in section.blocks -%}
+        <article class="story__chapter" data-story-chapter {{ block.shopify_attributes }}>
+          <span class="story__kicker">{{ block.settings.kicker }}</span>
+          <h3 class="story__title">{{ block.settings.title }}</h3>
+          <div class="story__text rte">{{ block.settings.text }}</div>
+          {%- if block.settings.link != blank -%}
+            <a class="link-arrow" href="{{ block.settings.link }}">{{ block.settings.link_label }} {% render 'icon', icon: 'arrow' %}</a>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Scroll story",
+  "class": "section-story",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "One kit, every shot" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From plug to perfect take" }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        { "type": "text", "id": "kicker", "label": "Kicker", "default": "Charge" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Never cut an adventure short" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Fast-charge batteries and keep cards organised in one box.</p>" },
+        { "type": "product", "id": "product", "label": "Product image source" },
+        { "type": "image_picker", "id": "image", "label": "Image (overrides product)" },
+        { "type": "range", "id": "hue", "label": "Glow hue", "min": 0, "max": 360, "step": 5, "default": 300 },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop chargers" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{ "name": "Scroll story" }]
+}
+{% endschema %}

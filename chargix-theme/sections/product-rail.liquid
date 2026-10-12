@@ -1,0 +1,36 @@
+<section class="rail section" data-rail>
+  <div class="container section__head">
+    <div>
+      <p class="eyebrow reveal">{{ section.settings.eyebrow }}</p>
+      <h2 class="h2 reveal" style="--i:1">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="rail__actions">
+      {%- if section.settings.collection != blank -%}
+        <a class="link-arrow" href="{{ section.settings.collection.url }}">{{ 'collections.view_all' | t }} {% render 'icon', icon: 'arrow' %}</a>
+      {%- endif -%}
+      <button class="round-btn" type="button" data-rail-prev aria-label="{{ 'general.previous' | t }}">{% render 'icon', icon: 'arrow' %}</button>
+      <button class="round-btn" type="button" data-rail-next aria-label="{{ 'general.next' | t }}">{% render 'icon', icon: 'arrow' %}</button>
+    </div>
+  </div>
+  <div class="rail__track container" data-rail-track>
+    {%- for product in section.settings.collection.products limit: section.settings.limit -%}
+      {% render 'product-card', product: product, index: forloop.index0 %}
+    {%- else -%}
+      <p class="muted">{{ 'collections.empty' | t }}</p>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product rail",
+  "class": "section-rail",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Most loved" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Best sellers" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 3, "max": 16, "step": 1, "default": 10 }
+  ],
+  "presets": [{ "name": "Product rail" }]
+}
+{% endschema %}

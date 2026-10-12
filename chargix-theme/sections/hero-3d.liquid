@@ -1,0 +1,104 @@
+{%- comment -%}
+  Home hero: a WebGL "energy core" that charges as you scroll. Featured
+  products orbit the core as glowing cards. A Higgsfield-generated loop can
+  be uploaded as the background video (see README > Higgsfield assets).
+{%- endcomment -%}
+{%- liquid
+  assign orbit = section.settings.orbit_collection
+  assign orbit_images = ''
+  for p in orbit.products limit: 6
+    if p.featured_media
+      assign url = p.featured_media | image_url: width: 512, height: 512, crop: 'center'
+      assign orbit_images = orbit_images | append: url | append: '|'
+    endif
+  endfor
+-%}
+<section class="hero" data-hero style="--hero-h: {{ section.settings.height }}svh">
+  <div class="hero__stage" data-hero-stage>
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'hero__video', image_size: '1920x' }}
+    {%- endif -%}
+    <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"
+      data-images="{{ orbit_images | escape }}"
+      data-volt="{{ settings.color_volt }}"
+      data-spark="{{ settings.color_spark }}"></canvas>
+    <div class="hero__grain" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content container">
+    <p class="eyebrow hero__eyebrow reveal" style="--i:0">{% render 'icon', icon: 'bolt' %} {{ section.settings.eyebrow }}</p>
+    <h1 class="hero__title">
+      {%- assign words = section.settings.heading | split: ' ' -%}
+      {%- for w in words -%}
+        <span class="word" style="--i: {{ forloop.index0 }}"><span>{{ w }}</span></span>{% unless forloop.last %} {% endunless %}
+      {%- endfor -%}
+    </h1>
+    <p class="hero__sub reveal" style="--i:3">{{ section.settings.subheading }}</p>
+    <div class="hero__ctas reveal" style="--i:4">
+      {%- if section.settings.cta_label != blank -%}
+        <a class="btn btn--volt btn--lg" href="{{ section.settings.cta_link }}" data-magnetic>{{ section.settings.cta_label }} {% render 'icon', icon: 'arrow' %}</a>
+      {%- endif -%}
+      {%- if section.settings.cta2_label != blank -%}
+        <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_link }}" data-magnetic>{{ section.settings.cta2_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="hero__readout container" aria-hidden="true">
+    <div class="readout">
+      <span class="readout__label">Charge</span>
+      <span class="readout__value" data-charge-value>000</span><span class="readout__unit">%</span>
+    </div>
+    <div class="readout__bar"><span data-charge-fill></span></div>
+    <ul class="readout__specs">
+      {%- for block in section.blocks -%}
+        <li {{ block.shopify_attributes }}><b>{{ block.settings.value }}</b> {{ block.settings.label }}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <a class="hero__scroll" href="#{{ section.id }}-next" aria-label="{{ 'general.scroll' | t }}"><span></span></a>
+  <span id="{{ section.id }}-next"></span>
+</section>
+
+<script type="module" src="{{ 'hero3d.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "3D energy hero",
+  "class": "section-hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Charge. Mount. Shoot." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Power that moves with you" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Fast chargers, magnetic mounts and pocket studio gear for people who film everything. Free shipping across the US." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Shop best sellers" },
+    { "type": "url", "id": "cta_link", "label": "Primary link", "default": "/collections/all" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Explore categories" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link", "default": "/collections" },
+    { "type": "collection", "id": "orbit_collection", "label": "Products orbiting the core", "info": "Up to 6 product photos float around the 3D core." },
+    { "type": "video", "id": "video", "label": "Background video (optional)", "info": "Upload a Higgsfield loop here. The 3D core renders on top of it." },
+    { "type": "range", "id": "height", "label": "Height", "min": 70, "max": 100, "step": 5, "unit": "vh", "default": 90 }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec chip",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "18W" },
+        { "type": "text", "id": "label", "label": "Label", "default": "PD fast charge" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "3D energy hero",
+      "blocks": [
+        { "type": "spec", "settings": { "value": "18W", "label": "PD fast charge" } },
+        { "type": "spec", "settings": { "value": "360°", "label": "magnetic rotation" } },
+        { "type": "spec", "settings": { "value": "30-day", "label": "returns" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

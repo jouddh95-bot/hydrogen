@@ -1,0 +1,164 @@
+{
+  "sections": {
+    "hero": {
+      "type": "haunt-hero",
+      "settings": {
+        "eyebrow": "Spooky season is open",
+        "heading": "Haunt the whole street.",
+        "subheading": "Giant glowing inflatables, a talking witch and projectors that turn any room into a haunted house. Free US shipping.",
+        "cta_label": "Shop Halloween",
+        "cta_link": "shopify://collections/halloween",
+        "cta2_label": "Giant inflatables",
+        "cta2_link": "shopify://collections/halloween-inflatables",
+        "collection": "halloween-inflatables",
+        "show_countdown": true,
+        "countdown_label": "Halloween night in"
+      }
+    },
+    "tapes": {
+      "type": "sticker-marquee",
+      "settings": {
+        "words": "Spooky season, Free US shipping, Giant inflatables, Built-in LEDs, Glow in the dark, 30-day returns, Haunt your street"
+      }
+    },
+    "bento": {
+      "type": "bento-categories",
+      "blocks": {
+        "b1": {
+          "type": "collection",
+          "settings": {
+            "collection": "halloween-inflatables",
+            "title": "Giant inflatables",
+            "product": "12-ft-giant-ghost-inflatable",
+            "color": "orange"
+          }
+        },
+        "b2": {
+          "type": "collection",
+          "settings": {
+            "collection": "night-lights-projectors",
+            "title": "Spooky lights & projectors",
+            "product": "moon-black-cat-projector-lamp",
+            "color": "violet"
+          }
+        },
+        "b3": {
+          "type": "collection",
+          "settings": {
+            "collection": "spooky-decor-props",
+            "title": "Decor & props",
+            "product": "life-size-talking-witch-animatronic",
+            "color": "lime"
+          }
+        },
+        "b4": {
+          "type": "collection",
+          "settings": {
+            "collection": "halloween",
+            "title": "Everything Halloween",
+            "product": "8-ft-witch-and-black-cat-roof-inflatable",
+            "color": "ink"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Pick your scare",
+        "heading": "Build your haunted house"
+      }
+    },
+    "trending": {
+      "type": "trending-reel",
+      "settings": {
+        "eyebrow": "Yard monsters",
+        "heading": "Giants for your yard",
+        "collection": "halloween-inflatables",
+        "limit": 8
+      }
+    },
+    "stack": {
+      "type": "why-stack",
+      "blocks": {
+        "s1": {
+          "type": "card",
+          "settings": {
+            "kicker": "Inside",
+            "title": "Turn your room into a haunted house",
+            "text": "<p>Plug a projector into any USB port and throw moons, bats and black cats across your walls and ceiling.</p>",
+            "product": "moon-black-cat-projector-lamp",
+            "link_label": "Shop spooky lights",
+            "link": "shopify://collections/night-lights-projectors",
+            "color": "violet"
+          }
+        },
+        "s2": {
+          "type": "card",
+          "settings": {
+            "kicker": "At the door",
+            "title": "Make every guest jump",
+            "text": "<p>A life-size 180 cm witch whose mouth moves as she talks. Put her by the door and wait.</p>",
+            "product": "life-size-talking-witch-animatronic",
+            "link_label": "Shop decor & props",
+            "link": "shopify://collections/spooky-decor-props",
+            "color": "lime"
+          }
+        },
+        "s3": {
+          "type": "card",
+          "settings": {
+            "kicker": "Outside",
+            "title": "Win the street",
+            "text": "<p>Inflatables up to 12 ft with built-in LEDs and blowers. Set up in minutes, seen from down the block.</p>",
+            "product": "8-ft-haunted-tree-inflatable",
+            "link_label": "Shop inflatables",
+            "link": "shopify://collections/halloween-inflatables",
+            "color": "pink"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "eyebrow": "Three ways to scare",
+        "heading": "From your bedroom to the rooftop"
+      }
+    },
+    "drop": {
+      "type": "drop-spotlight",
+      "settings": {
+        "product": "12-ft-giant-ghost-inflatable",
+        "eyebrow": "The main character",
+        "word": "BOO",
+        "tag": "12 ft tall",
+        "specs": "Towering 12 ft tall ghost\nBright built-in LED lights\nWaterproof polyester, stays fully inflated\nStakes, ropes and sandbags included",
+        "cta": "Meet the ghost"
+      }
+    },
+    "all": {
+      "type": "product-grid",
+      "settings": {
+        "eyebrow": "The Halloween shop",
+        "heading": "Every spooky thing",
+        "collection": "halloween",
+        "limit": 12
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "tapes",
+    "bento",
+    "trending",
+    "stack",
+    "drop",
+    "all"
+  ]
+}

@@ -1,0 +1,46 @@
+{%- assign product = section.settings.product -%}
+{%- if product != blank -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+<section class="spotlight section" style="--hue: {{ section.settings.hue }}" data-spotlight>
+  <div class="container spotlight__grid">
+    <div class="spotlight__media" data-parallax-root>
+      <div class="spotlight__orb" data-parallax="0.25"></div>
+      <div class="spotlight__img" data-parallax="-0.12" data-tilt>
+        {{ product.featured_media | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 990px) 50vw, 92vw', alt: product.title }}
+        <span class="card__glare" aria-hidden="true"></span>
+      </div>
+      <span class="spotlight__tag" data-parallax="0.4">{{ section.settings.tag }}</span>
+    </div>
+    <div class="spotlight__copy">
+      <p class="eyebrow reveal">{{ section.settings.eyebrow }}</p>
+      <h2 class="h2 reveal" style="--i:1">{{ product.title | escape }}</h2>
+      <div class="reveal" style="--i:2">{% render 'price', product: product %}</div>
+      <p class="spotlight__lede reveal" style="--i:3">{{ product.description | strip_html | truncatewords: 34 }}</p>
+      {%- if section.settings.specs != blank -%}
+        <ul class="spec-list reveal" style="--i:4">
+          {%- assign specs = section.settings.specs | newline_to_br | split: '<br />' -%}
+          {%- for s in specs -%}{%- assign s2 = s | strip -%}{%- if s2 != blank -%}<li>{{ s2 }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <div class="spotlight__ctas reveal" style="--i:5">
+        <a class="btn btn--volt btn--lg" href="{{ product.url }}" data-product-link data-magnetic>{{ 'products.view' | t }} {% render 'icon', icon: 'arrow' %}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product spotlight",
+  "class": "section-spotlight",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pocket cinema" },
+    { "type": "text", "id": "tag", "label": "Floating tag", "default": "105mm + 200mm optics" },
+    { "type": "textarea", "id": "specs", "label": "Spec lines (one per line)" },
+    { "type": "range", "id": "hue", "label": "Glow hue", "min": 0, "max": 360, "step": 5, "default": 300 }
+  ],
+  "presets": [{ "name": "Product spotlight" }]
+}
+{% endschema %}

@@ -1,0 +1,137 @@
+{%- liquid
+  assign hue = 300
+  case collection.handle
+    when 'chargers-power'
+      assign hue = 330
+    when 'phone-stands-mounts'
+      assign hue = 25
+    when 'selfie-sticks-tripods'
+      assign hue = 275
+    when 'camera-grips-lighting'
+      assign hue = 165
+    when 'lenses-filters'
+      assign hue = 300
+    when 'cases-screen-protection'
+      assign hue = 45
+    when 'action-camera-accessories'
+      assign hue = 5
+    when 'best-sellers'
+      assign hue = 85
+    when 'halloween', 'halloween-inflatables'
+      assign hue = 22
+    when 'night-lights-projectors'
+      assign hue = 270
+    when 'spooky-decor-props'
+      assign hue = 95
+    when 'telesin'
+      assign hue = 190
+  endcase
+  if collection.metafields.custom.hue != blank
+    assign hue = collection.metafields.custom.hue
+  endif
+-%}
+<section class="plp" style="--hue: {{ hue }}" data-plp>
+  <header class="plp__hero">
+    <div class="plp__aurora" aria-hidden="true"></div>
+    <div class="container">
+      <nav class="crumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span>/</span><a href="{{ routes.collections_url }}">{{ 'collections.all_categories' | t }}</a>
+      </nav>
+      <h1 class="plp__title" data-split>{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}<div class="plp__desc rte">{{ collection.description }}</div>{%- endif -%}
+      <p class="plp__count"><span class="mono">{{ collection.products_count }}</span> {{ 'collections.items' | t }}</p>
+      <div class="plp__stickers" aria-hidden="true">
+        {%- for p in collection.products limit: 3 -%}
+          {%- if p.featured_media -%}<span class="plp__sticker plp__sticker--{{ forloop.index }}">{{ p.featured_media | image_url: width: 400 | image_tag: loading: 'eager', alt: '' }}</span>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </header>
+
+  {%- paginate collection.products by section.settings.per_page -%}
+  <div class="container plp__bar">
+    {%- if section.settings.show_category_chips -%}
+      <ul class="chips" aria-label="{{ 'collections.all_categories' | t }}">
+        <li><a class="chip{% if collection.handle == 'all' %} is-active{% endif %}" href="{{ routes.all_products_collection_url }}">{{ 'collections.view_all' | t }}</a></li>
+        {%- assign lead = 'halloween,halloween-inflatables,night-lights-projectors,spooky-decor-props' | split: ',' -%}
+        {%- if settings.halloween_mode -%}
+          {%- for h in lead -%}
+            {%- assign c = collections[h] -%}
+            {%- if c == blank or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+            <li><a class="chip chip--spooky{% if c.handle == collection.handle %} is-active{% endif %}" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- endif -%}
+        {%- for c in collections -%}
+          {%- if c.handle == 'frontpage' or c.handle == 'products' or c.handle == 'all' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+          {%- if settings.halloween_mode and lead contains c.handle -%}{%- continue -%}{%- endif -%}
+          <li><a class="chip{% if c.handle == collection.handle %} is-active{% endif %}" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <form class="sort" data-sort-form>
+      <label for="SortBy" class="visually-hidden">{{ 'collections.sort_by' | t }}</label>
+      <select id="SortBy" name="sort_by" data-sort>
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        {%- for option in collection.sort_options -%}
+          <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+        {%- endfor -%}
+      </select>
+    </form>
+  </div>
+
+  {%- if collection.filters.size > 0 and section.settings.show_filters -%}
+    <form class="container filters" data-filter-form>
+      {%- for filter in collection.filters -%}
+        {%- if filter.type == 'list' -%}
+          <details class="filter">
+            <summary>{{ filter.label | escape }}{% if filter.active_values.size > 0 %} <span class="filter__n">{{ filter.active_values.size }}</span>{% endif %}</summary>
+            <div class="filter__panel">
+              {%- for value in filter.values -%}
+                <label class="filter__opt"><input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}> {{ value.label | escape }} <small>({{ value.count }})</small></label>
+              {%- endfor -%}
+            </div>
+          </details>
+        {%- elsif filter.type == 'price_range' -%}
+          <details class="filter">
+            <summary>{{ filter.label | escape }}</summary>
+            <div class="filter__panel filter__price">
+              <label>{{ 'collections.from' | t }} <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | remove: ',' }}" placeholder="0"></label>
+              <label>{{ 'collections.to' | t }} <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | remove: ',' }}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}"></label>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+      <button type="submit" class="btn btn--ghost btn--sm">{{ 'collections.apply' | t }}</button>
+      <a class="link-arrow" href="{{ collection.url }}?sort_by={{ collection.sort_by }}">{{ 'collections.clear' | t }}</a>
+    </form>
+  {%- endif -%}
+
+  <div class="container product-grid product-grid--plp">
+    {%- for product in collection.products -%}
+      {% render 'product-card', product: product, index: forloop.index0, eager: forloop.first %}
+    {%- else -%}
+      <div class="empty"><p>{{ 'collections.empty' | t }}</p><a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">{{ 'collections.view_all' | t }}</a></div>
+    {%- endfor -%}
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    <nav class="container pager" aria-label="{{ 'general.pagination' | t }}">
+      {%- if paginate.previous -%}<a class="round-btn round-btn--back" href="{{ paginate.previous.url }}" aria-label="{{ 'general.previous' | t }}">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+      <span class="mono">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+      {%- if paginate.next -%}<a class="round-btn" href="{{ paginate.next.url }}" aria-label="{{ 'general.next' | t }}">{% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+    </nav>
+  {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "class": "section-main-collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters", "default": true },
+    { "type": "checkbox", "id": "show_category_chips", "label": "Show category chips", "default": true }
+  ]
+}
+{% endschema %}

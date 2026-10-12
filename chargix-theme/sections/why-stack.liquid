@@ -1,0 +1,68 @@
+{%- comment -%}
+  Why ChargiX: full-width colour cards that stack on top of each other as you
+  scroll. Each card that gets covered sinks back and tilts away (assets/feed.js).
+{%- endcomment -%}
+<section class="stack-sec section" data-stack>
+  <div class="container section__head">
+    <div>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="h2" data-bounce>{{ section.settings.heading }}</h2>
+    </div>
+  </div>
+  <div class="container stack">
+    {%- for block in section.blocks -%}
+      {%- assign p = block.settings.product -%}
+      <article class="scard scard--{{ block.settings.color }}" style="--i: {{ forloop.index0 }}" data-scard {{ block.shopify_attributes }}>
+        <div class="scard__copy">
+          <span class="scard__num">0{{ forloop.index }}</span>
+          <p class="scard__kicker">{{ block.settings.kicker }}</p>
+          <h3 class="scard__title">{{ block.settings.title }}</h3>
+          <div class="scard__text">{{ block.settings.text }}</div>
+          {%- if block.settings.link_label != blank -%}
+            <a class="btn btn--ink" href="{{ block.settings.link }}">{{ block.settings.link_label }} {% render 'icon', icon: 'arrow' %}</a>
+          {%- endif -%}
+        </div>
+        {%- if p != blank and p.featured_media -%}
+          <a class="scard__media" href="{{ p.url }}" data-product-link aria-label="{{ p.title | escape }}" tabindex="-1">
+            <span data-shared-media>{{ p.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', alt: p.title }}</span>
+          </a>
+        {%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stacking cards",
+  "class": "section-stack",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why ChargiX" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From viral to your hands" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "text", "id": "kicker", "label": "Kicker", "default": "Discover" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Seen it everywhere" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "link_label", "label": "Button" },
+        { "type": "url", "id": "link", "label": "Button link" },
+        {
+          "type": "select", "id": "color", "label": "Card colour", "default": "pink",
+          "options": [
+            { "value": "pink", "label": "Hot pink" }, { "value": "lime", "label": "Lime" },
+            { "value": "orange", "label": "Tangerine" }, { "value": "violet", "label": "Violet" },
+            { "value": "mint", "label": "Mint" }, { "value": "ink", "label": "Ink" }
+          ]
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{ "name": "Stacking cards" }]
+}
+{% endschema %}

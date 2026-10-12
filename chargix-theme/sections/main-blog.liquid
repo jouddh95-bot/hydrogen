@@ -1,0 +1,20 @@
+<section class="section">
+  <div class="container">
+    <h1 class="h1 reveal">{{ blog.title | escape }}</h1>
+    {%- paginate blog.articles by 12 -%}
+      <div class="cats__grid">
+        {%- for article in blog.articles -%}
+          <a class="cat-tile reveal" href="{{ article.url }}" style="--i: {{ forloop.index0 }}; --hue: 315" data-tilt>
+            <div class="cat-tile__media">{%- if article.image -%}{{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.title }}{%- endif -%}</div>
+            <div class="cat-tile__body"><h2 class="cat-tile__title">{{ article.title | escape }}</h2><span class="mono">{{ article.published_at | date: '%b %d, %Y' }}</span></div>
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}<nav class="pager">{{ paginate | default_pagination }}</nav>{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Blog", "class": "section-main-blog" }
+{% endschema %}

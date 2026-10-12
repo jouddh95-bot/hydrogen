@@ -1,0 +1,267 @@
+/* ChargiX Haunt (Halloween mode)
+   Loaded after feed.css when Theme settings > Halloween > Halloween mode is on.
+   Same sticker language, flipped to night: bone-white stickers on a purple
+   night sky, pumpkin orange, slime green and witch violet, with hard violet
+   shadows. Motion lives in haunt.js (bats, spider, eyes, lightning) and
+   haunt3d.js (the jack-o'-lantern hero). */
+
+:root {
+  --pink: #ff6a1a;      /* pumpkin */
+  --lime: #a3ff2b;      /* slime */
+  --orange: #ffb020;    /* candle */
+  --violet: #8a3dff;    /* witch */
+  --mint: #3df5c4;      /* ectoplasm */
+  --butter: #ffd84a;    /* moon */
+  --blood: #ff2d4a;
+  --ink-0: #0a0612;
+  --night: #140a24;
+  --night-2: #21123a;
+  --bone: #f4ead6;
+  --paper: var(--night);
+  --card: var(--bone);
+  --shade: #7a35ff;
+  --line: rgba(244, 234, 214, 0.14);
+  --line-strong: rgba(244, 234, 214, 0.28);
+  --glass: rgba(26, 14, 46, 0.94);
+  --covers: #ff6a1a, #7a35ff, #a3ff2b, #ffb020, #ff2d4a;
+  color-scheme: dark;
+}
+
+body.is-haunted { background: var(--night); color: var(--bone); }
+.is-haunted ::selection { background: var(--pink); color: var(--ink-0); }
+
+/* Night sky: moon glow, pumpkin haze, slime haze and a field of stars. */
+.is-haunted .bg-blobs {
+  background:
+    radial-gradient(36vmax 36vmax at 88% -6%, rgba(255, 216, 74, 0.16), transparent 70%),
+    radial-gradient(44vmax 40vmax at -6% 70%, rgba(255, 106, 26, 0.16), transparent 70%),
+    radial-gradient(40vmax 40vmax at 100% 100%, rgba(138, 61, 255, 0.26), transparent 70%),
+    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 72% 38%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.4px 1.4px at 38% 72%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 88% 82%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 52% 8%, rgba(255, 255, 255, 0.7), transparent);
+  background-size: auto, auto, auto, 260px 260px, 310px 310px, 380px 380px, 290px 290px, 340px 340px;
+}
+
+/* ---------- Type on the night ---------- */
+.is-haunted :is(.h1, .h2, h1, h2, h3, .pdp__title) { color: var(--bone); }
+.is-haunted :is(.card, .cat-tile, .hang, .plp__hero, .scard--lime, .scard--orange, .scard--mint, .scard--pink, .scard--butter, .tile--lime, .tile--orange, .tile--mint, .tile--butter, .tile--pink) :is(.h1, .h2, h1, h2, h3, .plp__title) { color: var(--ink-0); }
+.is-haunted .plp__title { color: var(--ink-0); }
+.is-haunted .scard--pink { --cfg: var(--ink-0); }
+.is-haunted .pdp__perks li { color: var(--ink-0); }
+.is-haunted .pdp__perks li:nth-child(1) { background: #e2ffb8; } .is-haunted .pdp__perks li:nth-child(2) { background: #ffd2b5; } .is-haunted .pdp__perks li:nth-child(3) { background: #e2d4ff; }
+.is-haunted .chip--spooky { background: var(--pink); color: var(--ink-0); }
+.is-haunted .chip--spooky.is-active, .is-haunted .chip.is-active { background: var(--lime); color: var(--ink-0); }
+.is-haunted .h2 em, .is-haunted .h1 em { color: var(--pink); }
+.is-haunted .eyebrow { background: var(--night-2); color: var(--bone); border-color: var(--bone); }
+.is-haunted .eyebrow::before { background: var(--lime); box-shadow: 0 0 10px var(--lime); }
+.is-haunted .muted, .is-haunted .rte { color: color-mix(in srgb, var(--bone) 80%, transparent); }
+.is-haunted .link-arrow { background: var(--lime); color: var(--ink-0); border-color: var(--ink-0); }
+
+/* Flicker: haunt.js picks a random visible letter now and then. */
+[data-bounce] .ch.is-flicker { animation: flicker 0.9s steps(1) both !important; }
+@keyframes flicker {
+  0% { opacity: 1; } 8% { opacity: 0.35; } 14% { opacity: 1; } 22% { opacity: 0.25; color: var(--pink); }
+  30% { opacity: 1; } 46% { opacity: 0.4; } 52% { opacity: 1; text-shadow: 0 0 18px var(--pink); } 100% { opacity: 1; }
+}
+
+/* ---------- Buttons ---------- */
+.is-haunted .btn--volt, .is-haunted .btn--pop { --bg: var(--pink); --fgc: var(--ink-0); }
+.is-haunted .btn--line { --fgc: var(--bone); border-color: var(--bone); }
+.is-haunted .btn--ink { --bg: var(--bone); --fgc: var(--ink-0); }
+
+/* ---------- Announcement + header ---------- */
+.is-haunted .announce { background: linear-gradient(90deg, #2a0f45, #3a1250 50%, #2a0f45); }
+.is-haunted .announce__item { color: var(--bone); }
+.is-haunted .announce__item .icon { color: var(--pink); }
+.is-haunted .header__inner { background: rgba(24, 12, 42, 0.96); border-color: var(--bone); }
+.is-haunted .nav__link, .is-haunted .header__icon { color: var(--bone); }
+.is-haunted .nav__link:hover, .is-haunted .nav__link.is-active { background: var(--pink); color: var(--ink-0); }
+.is-haunted .header__icon:hover { background: var(--pink); color: var(--ink-0); }
+.is-haunted .header__cart { background: var(--pink); color: var(--ink-0); }
+.is-haunted .header__cart:hover { background: var(--lime); color: var(--ink-0); }
+.is-haunted .logo { color: var(--bone); }
+.is-haunted .logo__x { color: var(--pink); }
+.is-haunted .mega__list { background: var(--night-2); border-color: var(--bone); }
+.is-haunted .mega__link { color: var(--bone); }
+.is-haunted .mega__link:hover { background: var(--pink); color: var(--ink-0); }
+.is-haunted .menu-drawer__panel { background: linear-gradient(180deg, #2a0f45, #140a24); }
+.is-haunted .search-dialog { background: var(--night-2); color: var(--bone); border-color: var(--bone); }
+.is-haunted .search-dialog input { color: var(--bone); }
+
+/* ---------- Hero ---------- */
+.haunt { position: relative; padding: 14px 12px 0; }
+.haunt__stage {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: min(880px, calc(100svh - 120px));
+  border: 2px solid var(--bone); border-radius: 34px;
+  background:
+    radial-gradient(60% 60% at 75% 55%, rgba(255, 106, 26, 0.22), transparent 70%),
+    radial-gradient(80% 70% at 20% 0%, #3b1766, transparent 70%),
+    linear-gradient(180deg, #1c0d33 0%, #120821 70%, #0b0514 100%);
+  box-shadow: 8px 8px 0 var(--shade);
+}
+.haunt__canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+.haunt__flat { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity 0.6s; }
+.haunt.is-flat .haunt__flat { opacity: 1; }
+.haunt__moon { position: absolute; right: 12%; top: 10%; width: 140px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #fff6cf, #f1d98a 70%); box-shadow: 0 0 80px 20px rgba(255, 216, 74, 0.25); }
+.haunt__jack { position: absolute; right: 16%; bottom: 14%; width: 260px; aspect-ratio: 1.2; border-radius: 48%; background: radial-gradient(circle at 50% 40%, #ffb15a, #ff6a1a 55%, #9c3405); box-shadow: 0 0 120px 30px rgba(255, 106, 26, 0.35); }
+.haunt__web { position: absolute; z-index: 1; width: clamp(120px, 16vw, 220px); color: rgba(244, 234, 214, 0.28); pointer-events: none; }
+.haunt__web--l { left: -2px; top: -2px; }
+.haunt__web--r { right: -2px; top: -2px; transform: scaleX(-1); }
+.haunt__fog { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; z-index: 1; pointer-events: none; overflow: hidden; }
+.haunt__fog i { position: absolute; bottom: -10%; left: -50%; width: 200%; height: 100%; background: radial-gradient(30% 60% at 20% 100%, rgba(200, 180, 255, 0.22), transparent 70%), radial-gradient(26% 50% at 60% 100%, rgba(200, 180, 255, 0.18), transparent 70%), radial-gradient(30% 60% at 90% 100%, rgba(200, 180, 255, 0.2), transparent 70%); animation: fog-drift 26s linear infinite; }
+.haunt__fog i:nth-child(2) { animation-duration: 38s; animation-direction: reverse; opacity: 0.7; bottom: -18%; }
+@keyframes fog-drift { to { transform: translate3d(25%, 0, 0); } }
+
+.haunt__grid { position: relative; z-index: 2; display: grid; gap: 30px; align-items: center; min-height: inherit; padding: clamp(84px, 9vw, 120px) clamp(20px, 5vw, 70px) clamp(36px, 5vw, 64px); pointer-events: none; }
+.haunt__grid a, .haunt__grid button, .haunt__count { pointer-events: auto; }
+@media (min-width: 990px) { .haunt__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+.haunt__copy { max-width: 640px; }
+.haunt__live { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; padding: 8px 14px; border: 2px solid var(--bone); border-radius: 999px; background: rgba(10, 6, 18, 0.6); color: var(--bone); font: 700 0.74rem/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; transform: rotate(-2deg); }
+.haunt__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(163, 255, 43, 0.7); animation: live 1.6s ease-out infinite; }
+.haunt__title { margin: 0; font: 900 clamp(3rem, 1.6rem + 6.4vw, 7rem)/0.9 var(--f-display); letter-spacing: -0.055em; color: var(--bone); text-shadow: 4px 4px 0 var(--shade); text-wrap: balance; }
+.haunt__title .wd:last-child .ch { color: var(--pink); text-shadow: 0 0 26px rgba(255, 106, 26, 0.55), 4px 4px 0 var(--ink-0); }
+.haunt__sub { margin: 22px 0 0; max-width: 46ch; font-size: clamp(1.02rem, 0.9rem + 0.4vw, 1.25rem); line-height: 1.55; color: color-mix(in srgb, var(--bone) 86%, transparent); }
+.haunt__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+.haunt .btn--line { background: rgba(10, 6, 18, 0.55); }
+
+.haunt__count { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 30px; padding: 12px 14px 12px 18px; border: 2px solid var(--bone); border-radius: 22px; background: rgba(10, 6, 18, 0.66); box-shadow: 5px 5px 0 var(--pink); }
+.haunt__count-label { font: 700 0.72rem/1.2 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); max-width: 9ch; }
+.haunt__count-cells { display: flex; gap: 8px; }
+.haunt__count-cells > span { display: grid; justify-items: center; min-width: 58px; padding: 8px 6px 6px; border-radius: 14px; background: var(--bone); color: var(--ink-0); border: 2px solid var(--ink-0); }
+.haunt__count-cells b { font: 800 1.5rem/1 var(--f-display); font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
+.haunt__count-cells small { margin-top: 4px; font: 700 0.6rem/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+.haunt__count-cells b.tick { animation: tick 0.5s var(--ease-bounce); }
+@keyframes tick { from { transform: translateY(-40%); opacity: 0.2; } }
+
+/* Products hanging from spider threads */
+.haunt__hang { position: relative; display: flex; justify-content: center; gap: clamp(10px, 2vw, 26px); align-self: start; min-height: 300px; margin-top: -30px; }
+.hang { position: relative; display: block; width: clamp(112px, 10.5vw, 158px); padding-top: var(--drop, 60px); color: var(--ink-0); transform-origin: 50% 0; animation: swing calc(4.2s + var(--i) * 0.9s) ease-in-out infinite alternate; animation-delay: calc(var(--i) * -1.3s); }
+.hang--1 { --drop: 0px; }
+.hang--2 { --drop: 64px; }
+.hang--3 { --drop: 22px; }
+.hang__thread { position: absolute; left: 50%; top: calc(-1 * clamp(84px, 9vw, 120px)); width: 1.5px; height: calc(var(--drop) + clamp(84px, 9vw, 120px)); background: linear-gradient(rgba(244, 234, 214, 0.15), rgba(244, 234, 214, 0.75)); }
+.hang__card { position: relative; display: block; padding: 8px; border: 2px solid var(--ink-0); border-radius: 22px; background: var(--bone); box-shadow: 6px 6px 0 var(--shade); transition: transform 0.4s var(--ease-bounce), box-shadow 0.3s; }
+.hang__media { display: block; aspect-ratio: 1; border-radius: 15px; overflow: hidden; background: #fff; border: 2px solid var(--ink-0); }
+.hang__media img { width: 100%; height: 100%; object-fit: cover; }
+.hang__meta { display: grid; gap: 4px; padding: 8px 4px 2px; }
+.hang__title { font-weight: 700; font-size: 0.82rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.hang__price { font: 700 0.8rem/1 var(--f-mono); color: #c2410c; }
+.hang__spider { position: absolute; left: calc(50% - 11px); top: calc(var(--drop) - 26px); width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 40%, #ff3b3b 0 2px, transparent 2.5px), radial-gradient(circle at 65% 40%, #ff3b3b 0 2px, transparent 2.5px), #0a0612; box-shadow: -7px 2px 0 -6px #0a0612, 7px 2px 0 -6px #0a0612; }
+.hang__spider::before, .hang__spider::after { content: ''; position: absolute; top: 9px; width: 34px; left: -6px; height: 10px; border: 2px solid #0a0612; border-bottom: 0; border-radius: 50% 50% 0 0; }
+.hang__spider::after { top: 14px; }
+.hang:hover { animation-play-state: paused; }
+.hang:hover .hang__card { transform: translateY(10px) rotate(-3deg) scale(1.05); box-shadow: 9px 9px 0 var(--pink); }
+@keyframes swing { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+@media (max-width: 989px) {
+  .haunt__stage { min-height: 0; }
+  .haunt__grid { padding-top: 92px; }
+  .haunt__hang { min-height: 300px; justify-content: space-around; }
+  .hang { width: 30%; max-width: 170px; }
+}
+@media (max-width: 560px) {
+  .haunt__count-cells > span { min-width: 50px; }
+  .haunt__count-label { max-width: none; width: 100%; }
+}
+
+/* Lightning over the whole page */
+.haunt-flash { position: fixed; inset: 0; z-index: 120; pointer-events: none; background: radial-gradient(120% 90% at 70% 0%, rgba(230, 220, 255, 0.55), rgba(180, 160, 255, 0.12) 60%, transparent); opacity: 0; }
+.haunt-flash.is-on { animation: strike 0.9s ease-out; }
+@keyframes strike { 0% { opacity: 0; } 6% { opacity: 1; } 12% { opacity: 0.15; } 20% { opacity: 0.85; } 100% { opacity: 0; } }
+
+/* Bats crossing the screen */
+.bat { position: fixed; left: 0; top: 0; z-index: 110; width: 58px; pointer-events: none; will-change: transform; }
+.bat svg { display: block; width: 100%; fill: #0a0612; stroke: #0a0612; filter: drop-shadow(0 0 6px rgba(163, 255, 43, 0.35)); }
+.bat .w { transform-origin: 32px 14px; animation: flap 0.22s ease-in-out infinite alternate; }
+.bat .w.r { animation-delay: 0s; }
+.bat.is-flip svg { transform: scaleX(-1); }
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(-0.4); } }
+
+/* The spider on its thread, under the header on the right */
+.spider { position: fixed; right: clamp(18px, 6vw, 90px); top: 0; z-index: 45; width: 46px; pointer-events: auto; transform: translateY(calc(var(--drop, 0px) + 40px)); }
+.spider__thread { position: absolute; left: 50%; bottom: 100%; width: 1.5px; height: calc(var(--drop, 0px) + 60px); background: rgba(244, 234, 214, 0.55); }
+.spider__body { display: block; width: 46px; animation: dangle 2.6s ease-in-out infinite alternate; transform-origin: 50% 0; }
+.spider.is-scared .spider__body { animation: scared 0.15s linear 4; }
+@keyframes dangle { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes scared { 50% { transform: translateX(3px) rotate(14deg); } }
+@media (max-width: 749px) { .spider { width: 34px; } .spider__body { width: 34px; } }
+
+/* Eyes in the dark */
+[data-eyes] { position: relative; }
+.eyes { position: absolute; z-index: 0; display: flex; gap: 10px; pointer-events: none; opacity: 0; animation: eyes-in 1s ease-out forwards; animation-delay: var(--d); }
+.eyes i { position: relative; width: 16px; height: 9px; border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; background: #ffcf3a; box-shadow: 0 0 12px rgba(255, 207, 58, 0.8); animation: blink var(--blink) infinite; transform-origin: 50% 50%; }
+.eyes i:last-child { transform: scaleX(-1); }
+.eyes b { position: absolute; left: 50%; top: 50%; width: 3px; height: 7px; margin: -3.5px 0 0 -1.5px; border-radius: 50%; background: #0a0612; transform: translate(var(--px, 0), var(--py, 0)); }
+@keyframes eyes-in { to { opacity: 0.85; } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.05); } }
+.eyes i:last-child { animation-name: blink-r; }
+@keyframes blink-r { 0%, 92%, 100% { transform: scaleX(-1) scaleY(1); } 95% { transform: scaleX(-1) scaleY(0.05); } }
+
+/* ---------- Sticker tapes ---------- */
+.is-haunted .tape:nth-child(1) .tape__track, .is-haunted .tape--a .tape__track { color: var(--ink-0); }
+
+/* ---------- Cards: bone stickers; a ghost peeks out on hover ---------- */
+.is-haunted .card { --tint: #f4ead6; }
+.is-haunted .card--t1 { --tint: #e8ffd0; } .is-haunted .card--t2 { --tint: #e6dcff; } .is-haunted .card--t3 { --tint: #ffe2c7; } .is-haunted .card--t4 { --tint: #d6fff1; }
+.is-haunted .card, .is-haunted .tcard, .is-haunted .cat-tile, .is-haunted .tile { position: relative; }
+.is-haunted .card::before, .is-haunted .tcard::before {
+  content: ''; position: absolute; z-index: -1; left: 50%; top: 8px; width: 56px; height: 64px; margin-left: -28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 64'%3E%3Cpath d='M28 2C14 2 5 12 5 27v35l7-6 6 6 5-6 5 6 5-6 5 6 6-6 7 6V27C51 12 42 2 28 2z' fill='%23f4ead6' stroke='%230a0612' stroke-width='2.5'/%3E%3Cellipse cx='20' cy='26' rx='4' ry='6' fill='%230a0612'/%3E%3Cellipse cx='36' cy='26' rx='4' ry='6' fill='%230a0612'/%3E%3Cellipse cx='28' cy='40' rx='5' ry='6' fill='%230a0612'/%3E%3C/svg%3E") center / contain no-repeat;
+  transform: translateY(20px) rotate(-6deg); opacity: 0; transition: transform 0.45s var(--ease-bounce), opacity 0.2s;
+}
+.is-haunted .card:hover::before, .is-haunted .tcard:hover::before { transform: translateY(-52px) rotate(-10deg); opacity: 1; }
+.is-shiver { animation: shiver 0.5s ease-in-out; }
+@keyframes shiver { 0%, 100% { translate: 0 0; } 15% { translate: -2px 1px; } 30% { translate: 2px -1px; } 45% { translate: -2px 0; } 60% { translate: 1px 1px; } 75% { translate: -1px -1px; } }
+
+/* ---------- Page transition cover: a jack-o'-lantern in the dark ---------- */
+.is-haunted .swipe-cover { background: radial-gradient(70% 60% at 50% 110%, var(--cover, var(--pink)) 0, transparent 70%), radial-gradient(80% 60% at 50% -10%, #3b1766, transparent 70%), #0d0618; }
+.is-haunted .swipe-cover__word { -webkit-text-stroke: 2px rgba(255, 106, 26, 0.35); transform: rotate(-6deg) translateY(28%); }
+.swipe-cover__jack {
+  position: absolute; left: 50%; top: 50%; width: min(46vmin, 360px); aspect-ratio: 1.15; transform: translate(-50%, -60%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 230 200'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='45%25' r='60%25'%3E%3Cstop offset='0' stop-color='%23ffb15a'/%3E%3Cstop offset='.6' stop-color='%23ff6a1a'/%3E%3Cstop offset='1' stop-color='%23a53a06'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d='M108 30c2-14 8-24 18-28l6 6c-8 4-12 12-13 22z' fill='%2346612a'/%3E%3Cellipse cx='115' cy='112' rx='108' ry='84' fill='url(%23g)' stroke='%230a0612' stroke-width='4'/%3E%3Cpath d='M70 34c-14 30-14 126 0 156M160 34c14 30 14 126 0 156M115 28v168' stroke='%23b8460a' stroke-width='3' fill='none' opacity='.6'/%3E%3Cpath d='M58 92l28-30 16 32zM172 92l-28-30-16 32zM105 116l10-16 10 16zM48 128c20 24 114 26 134 0l-6 22-14-8-10 16-14-10-14 12-14-12-12 10-12-14-12 8z' fill='%23ffe38a' stroke='%230a0612' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 40px rgba(255, 140, 40, 0.6));
+  animation: jack-pulse 0.5s ease-in-out infinite alternate;
+}
+@keyframes jack-pulse { to { filter: drop-shadow(0 0 70px rgba(255, 160, 40, 0.9)); } }
+.is-haunted .arrive-img { box-shadow: 10px 10px 0 var(--shade), 0 0 60px rgba(255, 106, 26, 0.45); }
+
+/* ---------- Bento / categories / stacks ---------- */
+.is-haunted .tile--ink { background: #0d0618; color: var(--bone); border-color: var(--bone); }
+.is-haunted .tile--violet, .is-haunted .scard--violet { color: var(--bone); }
+.is-haunted .cat-tile { background: hsl(var(--hue) 92% 58%); }
+.is-haunted .cat-tile__title, .is-haunted .cat-tile .mono { color: var(--ink-0); }
+
+/* Footer: slime-to-pumpkin, with eyes in the dark */
+.is-haunted .footer { background: #0b0514; color: var(--bone); border-top: 2px solid var(--bone); }
+.is-haunted .footer__mega { background: linear-gradient(90deg, var(--pink), var(--orange) 35%, var(--lime) 65%, var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Product page + listing on the night */
+.is-haunted .pdp__main, .is-haunted .pnav__link { background: var(--bone); }
+.is-haunted .pnav__link--next { background: var(--lime); }
+.is-haunted .plp__bar { background: rgba(24, 12, 42, 0.96); border-color: var(--bone); color: var(--bone); }
+.is-haunted .drawer__panel { background: var(--night-2); color: var(--bone); }
+.is-haunted .sticky-buy { background: rgba(24, 12, 42, 0.97); color: var(--bone); }
+
+/* Sticker cursor in pumpkin */
+.is-haunted .sticker-cursor { --c: var(--pink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hang, .haunt__fog i, .spider__body, .eyes, .eyes i, .swipe-cover__jack { animation: none !important; }
+  .eyes { opacity: 0.85; }
+  .bat, .spider, .haunt-flash { display: none !important; }
+}
+
+/* Contrast fixes on the night */
+.is-haunted .reel-sec__bar span { background: var(--pink); }
+.is-haunted .reel-sec__bar { background: rgba(244, 234, 214, 0.12); border-radius: 6px; }
+.is-haunted .drop__specs li { color: var(--ink-0); }
+.is-haunted .drop__specs li:nth-child(4n + 1) { background: #ffd2b5; } .is-haunted .drop__specs li:nth-child(4n + 2) { background: #e2ffb8; } .is-haunted .drop__specs li:nth-child(4n + 3) { background: #e2d4ff; } .is-haunted .drop__specs li:nth-child(4n) { background: #ffefb0; }
+.is-haunted .drop__word { -webkit-text-stroke: 2px rgba(255, 106, 26, 0.32); }
+.is-haunted .drop__disc { background: conic-gradient(from 0deg, var(--pink), #ff9a3c, var(--butter), var(--lime), #2bd99f, var(--violet), #4b1d8f, var(--pink)); }
+.is-haunted .drop__disc::after { background: var(--night); }
+.is-haunted .drop s, .is-haunted .drop .price__compare { color: color-mix(in srgb, var(--bone) 60%, transparent); }
+.is-haunted .tcard { color: #fff; }
+.haunt__title, .haunt__sub { text-shadow: 0 2px 18px rgba(10, 6, 18, 0.65); }
+.haunt__title { text-shadow: 4px 4px 0 var(--shade), 0 4px 30px rgba(10, 6, 18, 0.6); }

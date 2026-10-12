@@ -1,0 +1,17 @@
+{%- comment -%} Design tokens, editable from Theme settings > Colors. {%- endcomment -%}
+<style>
+  :root {
+    --ink: {{ settings.color_ink }};
+    --ink-2: {{ settings.color_surface }};
+    --fg: {{ settings.color_text }};
+    --muted: {{ settings.color_muted }};
+    --volt: {{ settings.color_volt }};
+    --volt-rgb: {{ settings.color_volt.red }}, {{ settings.color_volt.green }}, {{ settings.color_volt.blue }};
+    --spark: {{ settings.color_spark }};
+    --spark-rgb: {{ settings.color_spark.red }}, {{ settings.color_spark.green }}, {{ settings.color_spark.blue }};
+    --lux: {{ settings.color_lux | default: "#a98bff" }};
+    --lux-rgb: {{ settings.color_lux.red | default: 169 }}, {{ settings.color_lux.green | default: 139 }}, {{ settings.color_lux.blue | default: 255 }};
+    --radius: {{ settings.radius }}px;
+    color-scheme: light;
+  }
+</style>

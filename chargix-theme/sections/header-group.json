@@ -1,0 +1,54 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement",
+      "blocks": {
+        "m1": {
+          "type": "message",
+          "settings": {
+            "text": "Spooky season is open: shop Halloween",
+            "link": "shopify://collections/halloween"
+          }
+        },
+        "m2": {
+          "type": "message",
+          "settings": {
+            "text": "Free express shipping across the US"
+          }
+        },
+        "m3": {
+          "type": "message",
+          "settings": {
+            "text": "Giant inflatables up to 12 ft",
+            "link": "shopify://collections/halloween-inflatables"
+          }
+        },
+        "m4": {
+          "type": "message",
+          "settings": {
+            "text": "30-day returns, no questions"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ]
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "logo_width": 140
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

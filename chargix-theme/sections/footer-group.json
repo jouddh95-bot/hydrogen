@@ -1,0 +1,16 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
+        "help": { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } }
+      },
+      "block_order": ["shop", "help"],
+      "settings": { "tagline": "Gear that keeps you charged, mounted and shooting.", "show_newsletter": true, "show_payment_icons": true }
+    }
+  },
+  "order": ["footer"]
+}

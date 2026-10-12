@@ -1,0 +1,83 @@
+{%- comment -%}
+  Halloween home hero. A WebGL night scene (assets/haunt3d.js): a carved
+  jack-o'-lantern that follows the pointer, circling ghosts that lunge at the
+  camera, bats, embers, fog and lightning. Three products hang from spider
+  threads and swing; a countdown runs to Halloween night.
+{%- endcomment -%}
+{%- assign coll = section.settings.collection -%}
+<section class="haunt" data-haunt>
+  <div class="haunt__stage">
+    <canvas class="haunt__canvas" data-haunt-canvas aria-hidden="true"></canvas>
+    <div class="haunt__flat" aria-hidden="true"><span class="haunt__moon"></span><span class="haunt__jack"></span></div>
+    <svg class="haunt__web haunt__web--l" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 0 L200 40 M0 0 L160 120 M0 0 L90 190 M0 0 L20 200"/><path d="M40 8 Q34 26 30 30 Q18 36 6 38 M80 16 Q66 50 62 60 Q40 72 14 76 M120 24 Q100 74 92 90 Q60 108 20 114 M160 32 Q134 98 124 120 Q80 146 30 152"/></g></svg>
+    <svg class="haunt__web haunt__web--r" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 0 L200 40 M0 0 L160 120 M0 0 L90 190 M0 0 L20 200"/><path d="M40 8 Q34 26 30 30 Q18 36 6 38 M80 16 Q66 50 62 60 Q40 72 14 76 M120 24 Q100 74 92 90 Q60 108 20 114"/></g></svg>
+    <div class="haunt__fog" aria-hidden="true"><i></i><i></i></div>
+
+    <div class="haunt__grid">
+      <div class="haunt__copy">
+        <p class="haunt__live"><span class="haunt__dot"></span>{{ section.settings.eyebrow }}</p>
+        <h1 class="haunt__title" data-bounce>{{ section.settings.heading }}</h1>
+        <p class="haunt__sub">{{ section.settings.subheading }}</p>
+        <div class="haunt__ctas">
+          {%- if section.settings.cta_label != blank -%}
+            <a class="btn btn--pop btn--lg" href="{{ section.settings.cta_link }}" data-magnetic>{{ section.settings.cta_label }} {% render 'icon', icon: 'arrow' %}</a>
+          {%- endif -%}
+          {%- if section.settings.cta2_label != blank -%}
+            <a class="btn btn--line btn--lg" href="{{ section.settings.cta2_link }}" data-magnetic>{{ section.settings.cta2_label }}</a>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_countdown -%}
+          <div class="haunt__count" data-countdown aria-label="{{ section.settings.countdown_label | escape }}">
+            <span class="haunt__count-label">{{ section.settings.countdown_label }}</span>
+            <span class="haunt__count-cells">
+              <span><b data-cd="d">--</b><small>days</small></span>
+              <span><b data-cd="h">--</b><small>hrs</small></span>
+              <span><b data-cd="m">--</b><small>min</small></span>
+              <span><b data-cd="s">--</b><small>sec</small></span>
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="haunt__hang">
+        {%- for p in coll.products limit: 3 -%}
+          <a class="hang hang--{{ forloop.index }}" href="{{ p.url }}" data-product-link style="--i: {{ forloop.index0 }}">
+            <span class="hang__thread" aria-hidden="true"></span>
+            <span class="hang__card">
+              <span class="hang__media" data-shared-media>
+                {%- if p.featured_media -%}{{ p.featured_media | image_url: width: 480 | image_tag: loading: 'eager', alt: p.title }}{%- endif -%}
+              </span>
+              <span class="hang__meta">
+                <span class="hang__title">{{ p.title | escape | truncatewords: 6 }}</span>
+                <span class="hang__price">{{ p.price | money }}</span>
+              </span>
+            </span>
+            <span class="hang__spider" aria-hidden="true"></span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="{{ 'haunt3d.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Halloween hero",
+  "class": "section-haunt",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Live label", "default": "Spooky season is open" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Haunt the whole street." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Giant glowing inflatables, talking witches and projectors that turn any room into a haunted house. Free US shipping." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Shop Halloween" },
+    { "type": "url", "id": "cta_link", "label": "Primary link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Giant inflatables" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link" },
+    { "type": "collection", "id": "collection", "label": "Products hanging in the hero", "info": "The first 3 products hang from spider threads." },
+    { "type": "checkbox", "id": "show_countdown", "label": "Show countdown to Halloween", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Countdown label", "default": "Halloween night in" }
+  ],
+  "presets": [{ "name": "Halloween hero" }]
+}
+{% endschema %}
