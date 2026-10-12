@@ -28,6 +28,9 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'feed.css' | asset_url | stylesheet_tag }}
+    {%- if settings.halloween_mode -%}
+      {{ 'haunt.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {%- render 'theme-tokens' -%}
 
     <script type="importmap">
@@ -69,15 +72,18 @@
       <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
     {%- endif -%}
     <script src="{{ 'feed.js' | asset_url }}" defer></script>
+    {%- if settings.halloween_mode -%}
+      <script src="{{ 'haunt.js' | asset_url }}" defer></script>
+    {%- endif -%}
 
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name }}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}" data-smooth="{{ settings.smooth_scroll }}">
+  <body class="template-{{ template.name }}{% if settings.halloween_mode %} is-haunted{% endif %}" data-transitions="{{ settings.page_transitions }}" data-cursor="{{ settings.cursor_glow }}" data-smooth="{{ settings.smooth_scroll }}">
     <div class="bg-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     <div class="charge-bar" aria-hidden="true"><span></span></div>
-    <div class="swipe-cover" aria-hidden="true"><span class="swipe-cover__word">chargix</span></div>
+    <div class="swipe-cover" aria-hidden="true"><span class="swipe-cover__word">{% if settings.halloween_mode %}boo!{% else %}chargix{% endif %}</span>{% if settings.halloween_mode %}<span class="swipe-cover__jack" aria-hidden="true"></span>{% endif %}</div>
     <script>
       (function (nav) {
         if (!nav || !nav.img) return;

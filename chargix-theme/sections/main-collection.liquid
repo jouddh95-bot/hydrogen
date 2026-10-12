@@ -17,6 +17,14 @@
       assign hue = 5
     when 'best-sellers'
       assign hue = 85
+    when 'halloween', 'halloween-inflatables'
+      assign hue = 22
+    when 'night-lights-projectors'
+      assign hue = 270
+    when 'spooky-decor-props'
+      assign hue = 95
+    when 'telesin'
+      assign hue = 190
   endcase
   if collection.metafields.custom.hue != blank
     assign hue = collection.metafields.custom.hue
@@ -45,8 +53,17 @@
     {%- if section.settings.show_category_chips -%}
       <ul class="chips" aria-label="{{ 'collections.all_categories' | t }}">
         <li><a class="chip{% if collection.handle == 'all' %} is-active{% endif %}" href="{{ routes.all_products_collection_url }}">{{ 'collections.view_all' | t }}</a></li>
+        {%- assign lead = 'halloween,halloween-inflatables,night-lights-projectors,spooky-decor-props' | split: ',' -%}
+        {%- if settings.halloween_mode -%}
+          {%- for h in lead -%}
+            {%- assign c = collections[h] -%}
+            {%- if c == blank or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+            <li><a class="chip chip--spooky{% if c.handle == collection.handle %} is-active{% endif %}" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- endif -%}
         {%- for c in collections -%}
           {%- if c.handle == 'frontpage' or c.handle == 'products' or c.handle == 'all' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+          {%- if settings.halloween_mode and lead contains c.handle -%}{%- continue -%}{%- endif -%}
           <li><a class="chip{% if c.handle == collection.handle %} is-active{% endif %}" href="{{ c.url }}">{{ c.title | escape }}</a></li>
         {%- endfor -%}
       </ul>

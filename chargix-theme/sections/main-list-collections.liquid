@@ -4,12 +4,40 @@
     <h1 class="h1 cats__title" data-bounce>{{ section.settings.heading }}</h1>
   </div>
   <div class="container cats__grid">
-    {%- assign hues = '330,25,275,165,300,45,5,85,350,190' | split: ',' -%}
+    {%- comment -%}
+      Featured categories first (in the order set below), then the rest.
+      Every tile gets a photo no other tile uses, so the same product never
+      repeats across the page.
+    {%- endcomment -%}
+    {%- assign hues = '22,275,95,330,45,165,300,5,190,350' | split: ',' -%}
+    {%- assign first_handles = section.settings.featured | default: '' | split: ',' -%}
+    {%- assign ordered = '' -%}
+    {%- for h in first_handles -%}
+      {%- assign hh = h | strip -%}
+      {%- if collections[hh] and collections[hh].products_count > 0 -%}{%- assign ordered = ordered | append: hh | append: ',' -%}{%- endif -%}
+    {%- endfor -%}
     {%- for c in collections -%}
-      {%- if c.handle == 'frontpage' or c.handle == 'products' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
-      {%- assign img = c.image | default: c.products.first.featured_media -%}
+      {%- if c.handle == 'frontpage' or c.handle == 'products' or c.handle == 'all' or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign key = c.handle | append: ',' -%}
+      {%- assign key_lead = ',' | append: key -%}
+      {%- assign probe = ',' | append: ordered -%}
+      {%- unless probe contains key_lead -%}{%- assign ordered = ordered | append: key -%}{%- endunless -%}
+    {%- endfor -%}
+    {%- assign used = '|' -%}
+    {%- assign list = ordered | split: ',' -%}
+    {%- for handle in list -%}
+      {%- assign c = collections[handle] -%}
+      {%- if c == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign img = c.image -%}
+      {%- if img == blank -%}
+        {%- for p in c.products limit: 12 -%}
+          {%- assign mid = '|' | append: p.id | append: '|' -%}
+          {%- if p.featured_media and used contains mid -%}{%- continue -%}{%- endif -%}
+          {%- if p.featured_media -%}{%- assign img = p.featured_media -%}{%- assign used = used | append: p.id | append: '|' -%}{%- break -%}{%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
       {%- assign h = forloop.index0 | modulo: 10 -%}
-      <a class="cat-tile reveal" href="{{ c.url }}" style="--i: {{ forloop.index0 }}; --hue: {{ hues[h] }}" data-tilt>
+      <a class="cat-tile reveal" href="{{ c.url }}" style="--i: {{ forloop.index0 }}; --hue: {{ hues[h] }}">
         <div class="cat-tile__media">
           {%- if img -%}{{ img | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 990px) 33vw, 90vw', alt: c.title }}{%- endif -%}
         </div>
@@ -17,7 +45,6 @@
           <h2 class="cat-tile__title">{{ c.title | escape }}</h2>
           <span class="mono">{{ c.products_count }} {{ 'collections.items' | t }}</span>
         </div>
-        <span class="card__glare" aria-hidden="true"></span>
       </a>
     {%- endfor -%}
   </div>
@@ -28,7 +55,8 @@
   "name": "Category list",
   "class": "section-list-collections",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Pick your vibe" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pick your vibe" },
+    { "type": "text", "id": "featured", "label": "Show these first", "info": "Collection handles, comma separated.", "default": "halloween,halloween-inflatables,night-lights-projectors,spooky-decor-props" }
   ]
 }
 {% endschema %}

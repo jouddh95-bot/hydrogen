@@ -25,7 +25,8 @@
     try { return new URL(a, location.href).pathname === new URL(b, location.href).pathname; } catch (e) { return false; }
   };
   const productPath = (u) => { try { return /\/products\//.test(new URL(u, location.href).pathname); } catch (e) { return false; } };
-  const COVERS = ['#ff2e88', '#7b5cff', '#ff7a1a', '#22e6b8', '#c8ff2e', '#ffe45c'];
+  const themeCovers = getComputedStyle(root).getPropertyValue('--covers').split(',').map((c) => c.trim()).filter(Boolean);
+  const COVERS = themeCovers.length ? themeCovers : ['#ff2e88', '#7b5cff', '#ff7a1a', '#22e6b8', '#c8ff2e', '#ffe45c'];
   const nextCover = () => {
     let k = 0;
     try { k = (parseInt(sessionStorage.getItem('chargix:cover') || '0', 10) + 1) % COVERS.length; sessionStorage.setItem('chargix:cover', k); } catch (e) {}

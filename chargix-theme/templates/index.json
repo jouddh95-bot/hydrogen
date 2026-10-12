@@ -1,73 +1,164 @@
 {
   "sections": {
     "hero": {
-      "type": "feed-hero",
-      "blocks": {
-        "c1": { "type": "chip", "settings": { "value": "Free", "label": "US shipping" } },
-        "c2": { "type": "chip", "settings": { "value": "30-day", "label": "returns" } },
-        "c3": { "type": "chip", "settings": { "value": "Viral", "label": "tested picks" } }
-      },
-      "block_order": ["c1", "c2", "c3"],
+      "type": "haunt-hero",
       "settings": {
-        "eyebrow": "Trending right now",
-        "heading": "Tech that broke the internet.",
-        "subheading": "The gadgets you keep seeing on your feed, hand-picked, tested and shipped free across the US. Only the ones worth the hype make the cut.",
-        "cta_label": "Shop the bestsellers",
-        "cta_link": "shopify://collections/best-sellers",
-        "cta2_label": "Explore collections",
-        "cta2_link": "shopify://collections",
-        "feed_collection": "all",
-        "badge_a": "Seen on your feed",
-        "badge_b": "Tested by us"
+        "eyebrow": "Spooky season is open",
+        "heading": "Haunt the whole street.",
+        "subheading": "Giant glowing inflatables, a talking witch and projectors that turn any room into a haunted house. Free US shipping.",
+        "cta_label": "Shop Halloween",
+        "cta_link": "shopify://collections/halloween",
+        "cta2_label": "Giant inflatables",
+        "cta2_link": "shopify://collections/halloween-inflatables",
+        "collection": "halloween-inflatables",
+        "show_countdown": true,
+        "countdown_label": "Halloween night in"
       }
     },
     "tapes": {
       "type": "sticker-marquee",
-      "settings": { "words": "Viral tech, Free US shipping, 30-day returns, Tested by us, New drops weekly" }
+      "settings": {
+        "words": "Spooky season, Free US shipping, Giant inflatables, Built-in LEDs, Glow in the dark, 30-day returns, Haunt your street"
+      }
     },
     "bento": {
       "type": "bento-categories",
       "blocks": {
-        "b1": { "type": "collection", "settings": { "collection": "camera-grips-lighting", "title": "Creator lighting", "color": "pink" } },
-        "b2": { "type": "collection", "settings": { "collection": "phone-stands-mounts", "title": "", "color": "lime" } },
-        "b3": { "type": "collection", "settings": { "collection": "selfie-sticks-tripods", "title": "", "color": "violet" } },
-        "b4": { "type": "collection", "settings": { "collection": "chargers-power", "title": "", "color": "orange" } },
-        "b5": { "type": "collection", "settings": { "collection": "lenses-filters", "title": "", "color": "mint" } },
-        "b6": { "type": "collection", "settings": { "collection": "action-camera-accessories", "title": "", "color": "ink" } },
-        "b7": { "type": "collection", "settings": { "collection": "cases-screen-protection", "title": "", "color": "butter" } }
+        "b1": {
+          "type": "collection",
+          "settings": {
+            "collection": "halloween-inflatables",
+            "title": "Giant inflatables",
+            "product": "12-ft-giant-ghost-inflatable",
+            "color": "orange"
+          }
+        },
+        "b2": {
+          "type": "collection",
+          "settings": {
+            "collection": "night-lights-projectors",
+            "title": "Spooky lights & projectors",
+            "product": "moon-black-cat-projector-lamp",
+            "color": "violet"
+          }
+        },
+        "b3": {
+          "type": "collection",
+          "settings": {
+            "collection": "spooky-decor-props",
+            "title": "Decor & props",
+            "product": "life-size-talking-witch-animatronic",
+            "color": "lime"
+          }
+        },
+        "b4": {
+          "type": "collection",
+          "settings": {
+            "collection": "halloween",
+            "title": "Everything Halloween",
+            "product": "8-ft-witch-and-black-cat-roof-inflatable",
+            "color": "ink"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7"],
-      "settings": { "eyebrow": "Shop by vibe", "heading": "Find your next obsession" }
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Pick your scare",
+        "heading": "Build your haunted house"
+      }
     },
     "trending": {
       "type": "trending-reel",
-      "settings": { "eyebrow": "Trending now", "heading": "The internet's favorites", "collection": "best-sellers", "limit": 8 }
+      "settings": {
+        "eyebrow": "Yard monsters",
+        "heading": "Giants for your yard",
+        "collection": "halloween-inflatables",
+        "limit": 8
+      }
     },
     "stack": {
       "type": "why-stack",
       "blocks": {
-        "s1": { "type": "card", "settings": { "kicker": "Discover", "title": "Seen it everywhere", "text": "<p>We track what's blowing up online and test it first. If it doesn't deliver, it doesn't make the shelf.</p>", "product": "telesin-18w-pd-fast-charger-for-dji-osmo-action-6-5pro-osmo-360-tf-card-3-slots-battery-pocket-charging-storage-box", "link_label": "Shop power", "link": "shopify://collections/chargers-power", "color": "pink" } },
-        "s2": { "type": "card", "settings": { "kicker": "Unbox", "title": "Built to impress", "text": "<p>Premium finishes, magnetic everything, and the kind of details people ask you about.</p>", "product": "telesin-magnetic-mobile-phone-floor-stand-cantilever-live-broadcast-tablet-bracket-lifting-bracket-universal-mobile-phone-holder", "link_label": "Shop setups", "link": "shopify://collections/phone-stands-mounts", "color": "lime" } },
-        "s3": { "type": "card", "settings": { "kicker": "Create", "title": "Make it go viral", "text": "<p>Lights, grips and lenses that turn any phone into the camera behind your next big post.</p>", "product": "telesin-magnetic-rgb-fill-light-phone-camera-shoot-hand-grip-phone-holder-shooting-aid-remote-control-handle-for-smartphone", "link_label": "Shop creator gear", "link": "shopify://collections/camera-grips-lighting", "color": "violet" } }
+        "s1": {
+          "type": "card",
+          "settings": {
+            "kicker": "Inside",
+            "title": "Turn your room into a haunted house",
+            "text": "<p>Plug a projector into any USB port and throw moons, bats and black cats across your walls and ceiling.</p>",
+            "product": "moon-black-cat-projector-lamp",
+            "link_label": "Shop spooky lights",
+            "link": "shopify://collections/night-lights-projectors",
+            "color": "violet"
+          }
+        },
+        "s2": {
+          "type": "card",
+          "settings": {
+            "kicker": "At the door",
+            "title": "Make every guest jump",
+            "text": "<p>A life-size 180 cm witch whose mouth moves as she talks. Put her by the door and wait.</p>",
+            "product": "life-size-talking-witch-animatronic",
+            "link_label": "Shop decor & props",
+            "link": "shopify://collections/spooky-decor-props",
+            "color": "lime"
+          }
+        },
+        "s3": {
+          "type": "card",
+          "settings": {
+            "kicker": "Outside",
+            "title": "Win the street",
+            "text": "<p>Inflatables up to 12 ft with built-in LEDs and blowers. Set up in minutes, seen from down the block.</p>",
+            "product": "8-ft-haunted-tree-inflatable",
+            "link_label": "Shop inflatables",
+            "link": "shopify://collections/halloween-inflatables",
+            "color": "pink"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"],
-      "settings": { "eyebrow": "Why ChargiX", "heading": "From viral to your hands" }
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "eyebrow": "Three ways to scare",
+        "heading": "From your bedroom to the rooftop"
+      }
     },
     "drop": {
       "type": "drop-spotlight",
       "settings": {
-        "product": "telesin-portrait-lens-kit-105mm-200mm-optical-shutter-dial-3200mah-magsafe-mount-iphone-17-pro-pro-max",
-        "eyebrow": "The showpiece",
-        "word": "DROP",
-        "tag": "105mm + 200mm optics",
-        "specs": "105mm + 200mm optical portrait lenses\nManual EV, ISO, shutter and white balance\n3,200mAh built-in battery\nMagSafe mount",
-        "cta": "See it up close"
+        "product": "12-ft-giant-ghost-inflatable",
+        "eyebrow": "The main character",
+        "word": "BOO",
+        "tag": "12 ft tall",
+        "specs": "Towering 12 ft tall ghost\nBright built-in LED lights\nWaterproof polyester, stays fully inflated\nStakes, ropes and sandbags included",
+        "cta": "Meet the ghost"
       }
     },
     "all": {
       "type": "product-grid",
-      "settings": { "eyebrow": "The collection", "heading": "Everything worth the hype", "collection": "all", "limit": 8 }
+      "settings": {
+        "eyebrow": "The Halloween shop",
+        "heading": "Every spooky thing",
+        "collection": "halloween",
+        "limit": 12
+      }
     }
   },
-  "order": ["hero", "tapes", "bento", "trending", "stack", "drop", "all"]
+  "order": [
+    "hero",
+    "tapes",
+    "bento",
+    "trending",
+    "stack",
+    "drop",
+    "all"
+  ]
 }

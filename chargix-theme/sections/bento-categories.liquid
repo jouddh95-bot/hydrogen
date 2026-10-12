@@ -15,7 +15,7 @@
     {%- for block in section.blocks -%}
       {%- assign c = block.settings.collection -%}
       {%- if c == blank -%}{%- continue -%}{%- endif -%}
-      {%- assign p = c.products.first -%}
+      {%- assign p = block.settings.product | default: c.products.first -%}
       <a class="tile tile--{{ block.settings.color }} tile--n{{ forloop.index }}" href="{{ c.url }}" style="--i: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
         <span class="tile__count">{{ c.products_count }} {{ 'collections.items' | t }}</span>
         <span class="tile__title">{{ block.settings.title | default: c.title | escape }}</span>
@@ -43,6 +43,7 @@
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "product", "id": "product", "label": "Product shown on the tile", "info": "Defaults to the first product in the collection." },
         {
           "type": "select", "id": "color", "label": "Tile colour", "default": "pink",
           "options": [

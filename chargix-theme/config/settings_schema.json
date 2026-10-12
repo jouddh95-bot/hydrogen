@@ -1,11 +1,23 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "ChargiX Feed",
-    "theme_version": "3.0.0",
+    "theme_name": "ChargiX Haunt",
+    "theme_version": "3.1.0",
     "theme_author": "ChargiX",
     "theme_documentation_url": "https://chargix.store",
     "theme_support_url": "https://chargix.store/pages/contact"
+  },
+  {
+    "name": "Halloween",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "halloween_mode",
+        "label": "Halloween mode",
+        "info": "Night palette, bats, spider, glowing eyes and lightning across the store.",
+        "default": true
+      }
+    ]
   },
   {
     "name": "Colors",

@@ -8,26 +8,27 @@
         "m1": {
           "type": "message",
           "settings": {
-            "text": "Free express shipping across the US"
+            "text": "Spooky season is open: shop Halloween",
+            "link": "shopify://collections/halloween"
           }
         },
         "m2": {
           "type": "message",
           "settings": {
-            "text": "30-day returns, no questions"
+            "text": "Free express shipping across the US"
           }
         },
         "m3": {
           "type": "message",
           "settings": {
-            "text": "Curated viral tech"
+            "text": "Giant inflatables up to 12 ft",
+            "link": "shopify://collections/halloween-inflatables"
           }
         },
         "m4": {
           "type": "message",
           "settings": {
-            "text": "Just landed: Telesin Portrait Lens Kit",
-            "link": "shopify://collections/lenses-filters"
+            "text": "30-day returns, no questions"
           }
         }
       },

@@ -5,7 +5,7 @@
 {%- assign p = section.settings.product -%}
 {%- if p != blank -%}
   {%- assign v = p.selected_or_first_available_variant -%}
-  <section class="drop section" data-drop>
+  <section class="drop section" data-drop{% if settings.halloween_mode %} data-eyes="3"{% endif %}>
     <div class="drop__word" aria-hidden="true" data-drop-word><span>{{ section.settings.word }}</span><span>{{ section.settings.word }}</span><span>{{ section.settings.word }}</span></div>
     <div class="container drop__grid">
       <a class="drop__visual" href="{{ p.url }}" data-product-link aria-label="{{ p.title | escape }}">

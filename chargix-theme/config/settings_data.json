@@ -1,19 +1,20 @@
 {
   "current": {
-    "color_ink": "#f4f0fb",
-    "color_surface": "#ffffff",
-    "color_text": "#120c1f",
-    "color_muted": "#6b6280",
-    "color_volt": "#ff2e88",
-    "color_spark": "#ff7a1a",
+    "color_ink": "#140a24",
+    "color_surface": "#f4ead6",
+    "color_text": "#f4ead6",
+    "color_muted": "#b7a8d1",
+    "color_volt": "#ff6a1a",
+    "color_spark": "#a3ff2b",
     "radius": 22,
     "page_transitions": true,
     "cursor_glow": true,
     "free_ship_threshold": 0,
-    "color_lux": "#7b5cff",
+    "color_lux": "#8a3dff",
     "ambient_circuit": false,
     "intro_loader": false,
-    "smooth_scroll": true
+    "smooth_scroll": true,
+    "halloween_mode": true
   },
   "presets": {}
 }
